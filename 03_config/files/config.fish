@@ -1,0 +1,20 @@
+# See other themes at
+# ~/.config/fish/functions/__bobthefish_colors.fish
+function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
+
+    # optionally include a base color scheme...
+    __bobthefish_colors terminal-dark
+
+    # then override everything you want! note that these must be defined with `set -x`
+    set -x color_repo_dirty               bryellow $colorfg
+    set -x color_repo_staged              brblue $colorfg
+
+end
+
+set fish_color_search_match --background=black
+
+# aliases/abbrs
+abbr -ag "-" "cd -"
+abbr -ag "..." "cd ../../"
+abbr -ag "...." "cd ../../../"
+abbr -ag "....." "cd ../../../../"
