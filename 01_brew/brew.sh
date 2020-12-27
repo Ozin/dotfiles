@@ -25,7 +25,7 @@ casks=(
     brave-browser
     docker
     dropbox
-    intellij-idea
+    intellij-idea-ce
     iterm2
     keepassxc
     skype
