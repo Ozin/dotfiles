@@ -10,6 +10,7 @@ apps=(
     # gnu-sed
     # gnu-which
     grep
+    java
     less
     fish
     z
