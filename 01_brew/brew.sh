@@ -6,13 +6,14 @@ apps=(
     curl
     diffutils      # File comparison utilities
     findutils      # GNU find, xargs, and locate
+    fish
     git
     # gnu-sed
     # gnu-which
     grep
     java
     less
-    fish
+    maven
     z
 )
 
