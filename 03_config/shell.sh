@@ -7,6 +7,7 @@ set fisher_plugins \
     edc/bass \
     oh-my-fish/theme-bobthefish \
     laughedelic/brew-completions \
+    jethrokuan/z \
     patrickf3139/colored_man_pages.fish \
     ozin/plugin-git
 
