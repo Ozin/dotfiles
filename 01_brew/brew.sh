@@ -30,6 +30,7 @@ casks=(
     intellij-idea-ce
     iterm2
     keepassxc
+    microsoft-teams
     skype
     spotify
     telegram-desktop
