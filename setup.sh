@@ -15,7 +15,7 @@ fi
 mkdir -p ~/Documents/projects
 cd ~/Documents/projects
 
-git clone git@github.com:Ozin/dotfiles.git
+git clone https://github.com/Ozin/dotfiles.git
 cd dotfiles
 
 ls */**.sh | sh -x
