@@ -3,6 +3,6 @@
     "terminal.external.osxExec": "iTerm.app",
     "terminal.integrated.fontFamily": "RobotoMono Nerd Font Mono",
     "workbench.colorTheme": "Community Material Theme High Contrast",
-    "editor.fontFamily": "Consolas, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "'JetBrainsMono Nerd Font', Consolas, Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 14
 }
