@@ -4,5 +4,6 @@
     "terminal.integrated.fontFamily": "RobotoMono Nerd Font Mono",
     "workbench.colorTheme": "Community Material Theme High Contrast",
     "editor.fontFamily": "'JetBrainsMono Nerd Font', Consolas, Menlo, Monaco, 'Courier New', monospace",
-    "editor.fontSize": 14
+    "editor.fontSize": 14,
+    "editor.fontLigatures": true
 }
