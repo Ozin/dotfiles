@@ -18,3 +18,8 @@ end
 set -g theme_nerd_fonts yes
 
 ln -sv (pwd)"/03_config/files/config.fish" ~/.config/fish
+
+# Add ~/bin to path variable
+# https://github.com/fish-shell/fish-shell/issues/527
+mkdir ~/bin
+contains ~/bin $fish_user_paths; or set -Ua fish_user_paths ~/bin
