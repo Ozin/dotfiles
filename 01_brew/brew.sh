@@ -8,6 +8,7 @@ apps=(
     findutils      # GNU find, xargs, and locate
     fish
     git
+    gpg
     # gnu-sed
     # gnu-which
     grep
