@@ -12,6 +12,10 @@ function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
 end
 
 set fish_color_search_match --background=black
+set fish_color_command green
+
+set theme_title_display_process yes
+set theme_title_use_abbreviated_path yes
 
 # aliases/abbrs
 abbr -ag "-" "cd -"
