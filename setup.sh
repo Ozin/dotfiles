@@ -18,4 +18,6 @@ cd ~/Documents/projects
 git clone https://github.com/Ozin/dotfiles.git
 cd dotfiles
 
+git update-index --assume-unchanged 03_config/files/computer_specific.fish
+
 ls */**.sh | sh -x
