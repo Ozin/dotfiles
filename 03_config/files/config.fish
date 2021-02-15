@@ -22,3 +22,5 @@ abbr -ag "-" "cd -"
 abbr -ag "..." "cd ../../"
 abbr -ag "...." "cd ../../../"
 abbr -ag "....." "cd ../../../../"
+
+source ~/Documents/projects/dotfiles/03_config/files/computer_specific.fish
