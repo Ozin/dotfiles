@@ -11,6 +11,7 @@ apps=(
     gpg
     # gnu-sed
     # gnu-which
+    htop
     grep
     java
     less
