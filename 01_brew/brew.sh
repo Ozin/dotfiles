@@ -16,7 +16,7 @@ apps=(
     java
     less
     maven
-    z
+    # z            # Added by fisher
 )
 
 brew install "${apps[@]}"
