@@ -11,10 +11,9 @@ sudo -v
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
 
-# Trackpad: enable tap to click for this user and for the login screen
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+###############################################################################
+# Localization and Language settings                                          #
+###############################################################################
 
 # Set language and text formats
 # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with
@@ -26,6 +25,18 @@ defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 sudo systemsetup -settimezone "Europe/Berlin" > /dev/null
+
+# Time & Clock: Show date in menu bar
+defaults write com.apple.menuextra.clock DateFormat -string "EEE d. MMM  HH:mm:ss"
+
+###############################################################################
+# Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
+###############################################################################
+
+# Trackpad: enable tap to click for this user and for the login screen
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
 # Stop iTunes from responding to the keyboard media keys
 # Also stops media keys from working
@@ -41,3 +52,9 @@ defaults write pbs.plist NSServicesStatus -dict-add "com.apple.Terminal - Search
     "ServicesMenu" = 0;
   };
 }'
+
+# Don't display keyboard/language selector
+defaults write "com.apple.TextInputMenu" visible -bool false
+
+# Display battery percentage
+defaults write "com.apple.menuextra.battery" ShowPercent YES
