@@ -2,8 +2,11 @@
     "terminal.integrated.shell.osx": "/usr/local/bin/fish",
     "terminal.external.osxExec": "iTerm.app",
     "terminal.integrated.fontFamily": "RobotoMono Nerd Font Mono",
-    "workbench.colorTheme": "Community Material Theme High Contrast",
     "editor.fontFamily": "'JetBrainsMono Nerd Font', Consolas, Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 14,
-    "editor.fontLigatures": true
+    "editor.fontLigatures": true,
+    "workbench.colorTheme": "Community Material Theme High Contrast",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
