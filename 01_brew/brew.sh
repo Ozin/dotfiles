@@ -16,6 +16,7 @@ apps=(
     java
     less
     maven
+    node
     # z            # Added by fisher
 )
 
