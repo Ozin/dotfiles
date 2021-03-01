@@ -4,6 +4,7 @@ apps=(
     bind
     binutils       # FSF Binutils for native development
     curl
+    coreutils      # GNU File, Shell, and Text utilities
     diffutils      # File comparison utilities
     findutils      # GNU find, xargs, and locate
     fish
