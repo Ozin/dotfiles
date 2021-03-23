@@ -6,6 +6,7 @@ apps=(
     curl
     coreutils      # GNU File, Shell, and Text utilities
     diffutils      # File comparison utilities
+    diff-so-fancy
     findutils      # GNU find, xargs, and locate
     fish
     git
