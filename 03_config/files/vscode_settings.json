@@ -8,5 +8,8 @@
     "workbench.colorTheme": "Community Material Theme High Contrast",
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }
