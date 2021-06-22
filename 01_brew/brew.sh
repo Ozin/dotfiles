@@ -29,7 +29,8 @@ brew tap homebrew/cask
 
 # Install packages
 casks=(
-    brave-browser
+    # brave-browser
+    firefox
     docker
     dropbox
     intellij-idea-ce
