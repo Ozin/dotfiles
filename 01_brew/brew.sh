@@ -27,10 +27,14 @@ brew install "${apps[@]}"
 # Install Caskroom
 brew tap homebrew/cask
 
+# Enable Nerd Fonts
+brew tap homebrew/cask-fonts
+
 # Install packages
 casks=(
     # brave-browser
     firefox
+    font-jetbrains-mono
     docker
     dropbox
     intellij-idea-ce

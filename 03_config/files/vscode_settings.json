@@ -1,16 +1,25 @@
 {
     "terminal.integrated.shell.osx": "/usr/local/bin/fish",
     "terminal.external.osxExec": "iTerm.app",
-    "terminal.integrated.fontFamily": "RobotoMono Nerd Font Mono",
-    "editor.fontFamily": "'JetBrainsMono Nerd Font', Consolas, Menlo, Monaco, 'Courier New', monospace",
-    "editor.fontSize": 14,
+    "terminal.integrated.fontFamily": "'JetBrains Mono'",
+    "editor.fontFamily": "'JetBrains Mono', Consolas, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 16,
     "editor.fontLigatures": true,
-    "workbench.colorTheme": "Community Material Theme High Contrast",
+    "workbench.colorTheme": "Nord",
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "files.autoSave": "afterDelay"
+    "redhat.telemetry.enabled": false,
+    "debug.console.fontSize": 14,
+    "terminal.integrated.fontSize": 16,
+    "elmLS.elmFormatPath": "/usr/local/bin/elm-format",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[elm]": {
+        "editor.defaultFormatter": "elmTooling.elm-ls-vscode"
+    },
+    "files.autoSave": "afterDelay",
+    "files.insertFinalNewline": true
 }
