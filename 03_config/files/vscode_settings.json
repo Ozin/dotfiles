@@ -21,5 +21,8 @@
         "editor.defaultFormatter": "elmTooling.elm-ls-vscode"
     },
     "files.autoSave": "afterDelay",
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "[svelte]": {
+        "editor.defaultFormatter": "svelte.svelte-vscode"
+    }
 }
