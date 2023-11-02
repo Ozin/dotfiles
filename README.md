@@ -9,3 +9,10 @@ Run
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ozin/dotfiles/main/setup.sh)"
 ```
+
+# Todos
+
+- [ ] use brewfile
+- [ ] go to ansible managed
+  - [ ] https://phelipetls.github.io/posts/introduction-to-ansible/
+- [ ] 
