@@ -1,0 +1,40 @@
+---
+
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_delegation.html#local-playbooks
+- name: Setup system
+  hosts: localhost
+  connection: local
+  # vars_prompt:
+  #   - name: "git_fullname"
+  #     prompt: "Plese enter your git name e.g Goetz Epperlein?"
+  #     default: "Goetz Epperlein"
+  #     private: no
+  #   - name: "git_mail"
+  #     prompt: "Plese enter your git email e.g nobody@foo.bar?"
+  #     default: ""
+  #     private: no
+  #   - name: "github_token"
+  #     prompt: "Plese enter your github token e.g dsd123...?"
+  #     default: ""
+  #     private: no
+  #   - name: "mas_email"
+  #     prompt: "Plese enter your Apple Store email or leave empty?"
+  #     default: ""
+  #     private: no
+
+  roles:
+    - homebrew
+    - python
+    - zsh_oh-my-zsh
+    - dotfiles
+    - git
+    - vim
+    - sublime
+    - vscode
+    - tmux
+    - linux
+    - osx
+    - vlc
+    - beyond-compare
+    - scansnap
+    - homebrew_cleanup

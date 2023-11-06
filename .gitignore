@@ -1,3 +1,17 @@
 .DS_Store
 
 downloads
+
+#
+## OS
+.DS_Store
+
+#
+## IDE
+.vscode
+
+#
+## Ansible
+**/site.retry
+# Do not commit secret config
+ansible/roles/dotfiles/src/bash_zsh/all_secret.sh
