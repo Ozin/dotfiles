@@ -2,6 +2,7 @@
 
 brew_taps:
     - homebrew/cask-fonts                                           # needed for font-*
+    #- graalvm/tap
     #- jakehilborn/jakehilborn                                      # needed for displayplacer
 
 brew_packages:
@@ -9,26 +10,27 @@ brew_packages:
     - binutils                                                      # FSF Binutils for native development
     - diffutils                                                     # File comparison utilities
     - findutils                                                     # GNU find, xargs, and locate
+    - inetutils
     - gawk
     - grep
     #- ack                                                          # Search tool like grep, but optimized for programmers
     #- ag                                                           # Code-search similar to ack
     - less
-    - gnu-sed
-    - gnu-which
-    - gnu-indent
-    - gnu-getopt
+    #- gnu-sed
+    #- gnu-which
+    #- gnu-indent
+    #- gnu-getopt
 
     - jq                                                            # Lightweight and flexible command-line JSON processor
-    - pv                                                            # Monitor data's progress through a pipe
-    - utf8proc                                                      # Clean C library for processing UTF-8 Unicode data
+    #- pv                                                            # Monitor data's progress through a pipe
+    #- utf8proc                                                      # Clean C library for processing UTF-8 Unicode data
 
-    - gnu-tar
-    - unzip
-    - gzip
-    - pigz                                                          # Parallel gzip
-    - xz                                                            # General-purpose data compression with high compression ratio
-    - p7zip                                                         # 7-Zip (high compression file archiver) implementation
+    #- gnu-tar
+    #- unzip
+    #- gzip
+    #- pigz                                                          # Parallel gzip
+    #- xz                                                            # General-purpose data compression with high compression ratio
+    #- p7zip                                                         # 7-Zip (high compression file archiver) implementation
     - brotli                                                        # Generic-purpose lossless compression algorithm by Google https://github.com/google/brotli
 
     - bash
@@ -40,31 +42,31 @@ brew_packages:
     #- fasd                                                         # quick access to files and directories https://github.com/clvv/fasd
     - diff-so-fancy                                                 # Good-lookin' diffs with diff-highlight and more
     - grc                                                           # Colorize logfiles and command output
-    - midnight-commander                                                            # Midnight commander
-    - rename
-    - hugo
-    - grip                                                          # Github markdown preview
+    #- midnight-commander                                                            # Midnight commander
+    #- rename
+    #- hugo
+    #- grip                                                          # Github markdown preview
 
-    - ipcalc                                                        # Calculate various network masks
-    - netcat                                                        # Utility for managing network connections
-    - nmap                                                          # Port scanning utility for large networks
-    - rsync
+    #- ipcalc                                                        # Calculate various network masks
+    #- netcat                                                        # Utility for managing network connections
+    #- nmap                                                          # Port scanning utility for large networks
+    #- rsync
     - curl
-    - httpie                                                        # User-friendly cURL replacement (command-line HTTP client)    - wget --with-iri                                               # Internet file retriever
-    - lynx                                                          # Text-based web browser
-    - httrack                                                       # Website copier/offline browser
+    #- httpie                                                        # User-friendly cURL replacement (command-line HTTP client)    - wget --with-iri                                               # Internet file retriever
+    #- lynx                                                          # Text-based web browser
+    #- httrack                                                       # Website copier/offline browser
     #- iperf
-    - iperf3
+    #- iperf3
     #- bind
     #- dnsmasq
     #- unbound
 
-    - gnutls                                                        # GNU TLS
+    #- gnutls                                                        # GNU TLS
     - gnupg
     - openssl                                                       # SSL/TLS cryptography library
     - ssh-copy-id                                                   # Copy identy to authorized keys of remote maschine
-    - pwgen                                                         # Password generator
-    - testssl                                                       # Tool which checks for the support of TLS/SSL ciphers and flaws
+    #- pwgen                                                         # Password generator
+    #- testssl                                                       # Tool which checks for the support of TLS/SSL ciphers and flaws
 
     - watch                                                         # Executes a program periodically, showing output fullscreen
     - htop                                                          # Improved top (interactive process viewer)
@@ -86,7 +88,7 @@ brew_packages:
     #- git-flow
     #- git-extras
     - asdf
-    - packer
+    #- packer
 
     # Automation
     - ansible
@@ -95,15 +97,15 @@ brew_packages:
 
     # AWS
     - awscli
-    - awsume
+    #- awsume
 
     # Go
-    - go
+    #- go
 
     # JavaScript
-    - nvm
+    #- nvm
     - node
-    - yarn
+    #- yarn
 
     # Ruby
     #- rbenv
@@ -111,9 +113,11 @@ brew_packages:
     #- ruby-build
 
     # Java
+    - openjdk
     #- ant
-    #- maven
+    - maven
     #- groovy
+    - graalvm/tap/graalvm-jdk17
 
     # Scala
     #- sbt
@@ -141,19 +145,24 @@ brew_cask_packages:
     - aldente                                                       # Battery management https://apphousekitchen.com
     # - sound-control                                                 # Sound output management https://staticz.com/soundcontrol/
     #- bluesnooze                                                   # Sleeping Mac = Bluetooth off https://github.com/odlp/bluesnooze
+    - iterm2
+    - keystore-explorer
 
     # - google-chrome
     - firefox
     - duckduckgo
+    - brave-browser
 
-    - font-fira-code                                                # Fira Code enables font ligatures for example != https://github.com/tonsky/FiraCode
+    #- font-fira-code                                                # Fira Code enables font ligatures for example != https://github.com/tonsky/FiraCode
+    - font-jetbrains-mono
+    - font-monaspace
     #- font-iosevka                                                  # Possible replacement for Fira https://github.com/be5invis/Iosevka
     - visual-studio-code                                            # Configured in separate role
-    - sourcetree
+    #- sourcetree
     #- meld
-    - postman
-    - insomnia
-    - hex-fiend
+    #- postman
+    #- insomnia
+    #- hex-fiend
     #- jetbrains-toolbox
     #- folx
     #- unetbootin
@@ -161,40 +170,43 @@ brew_cask_packages:
 
     #- wireshark
     #- wireshark-chmodbpf
-    - charles                                                       # HTTP proxy https://www.charlesproxy.com
+    #- charles                                                       # HTTP proxy https://www.charlesproxy.com
     #- mono-mdk                                                     # Needed by fiddler
     #- fiddler
     #- filezilla
     #- cyberduck
     #- tunnelblick
 
-    #- dropbox
-    - google-drive                                                  # Replaces google-backup-and-sync which is no longer supported
+    - dropbox
+    #- google-drive                                                  # Replaces google-backup-and-sync which is no longer supported
     #- rescuetime
     #- tomighty                                                     # No longer used and replaced with next
     - tomatobar                                                     # Pomodoro timer
-    - teamviewer
+    #- teamviewer
 
     #- rambox
     #- skype
     #- zoom
-    - signal
+    #- signal
+    - telegram-desktop
+    - webex
 
     #- xmind
-    - freemind
+    #- freemind
     #- adobe-acrobat-reader
     #- boostnote
-    - joplin
-    - microsoft-auto-update
-    - microsoft-office
+    #- joplin
+    #- microsoft-auto-update
+    #- microsoft-office
     #- portfolioperformance
-    - banking-4
+    #- banking-4
 
     #- balsamiq-mockups
-    - imageoptim
+    - drawio
+    #- imageoptim
     - gimp
     #- krita
-    - rar
+    #- rar
     #- pencil
     #- xquartz
     #- inkscape
@@ -205,9 +217,10 @@ brew_cask_packages:
     - spotify
     #- handbrake
     #- obs                                                           # Screen capturing https://obsproject.com/ driver needed https://obsproject.com/forum/threads/how-to-capture-desktop-audio-on-mac.16491/
-    - calibre                                                        # E-Book manager https://calibre-ebook.com
-    - anki
+    #- calibre                                                        # E-Book manager https://calibre-ebook.com
+    #- anki
     #- gmvault
+    - obsidian
 
     #- origami-studio
     #- google-web-designer
@@ -240,6 +253,7 @@ brew_cask_packages:
     #- java
     #- java8
     #- jce-unlimited-strength-policy8
+    - intellij-idea-ce
 
     # Haskell
     #- haskell-platform
@@ -263,5 +277,3 @@ brew_cask_packages:
     # Games
     #- openttd
     #- openra
-
-

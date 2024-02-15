@@ -24,17 +24,17 @@
 
   roles:
     - homebrew
-    - python
-    - zsh_oh-my-zsh
-    - dotfiles
-    - git
-    - vim
-    - sublime
-    - vscode
-    - tmux
-    - linux
-    - osx
-    - vlc
-    - beyond-compare
-    - scansnap
+  #  - python
+  #  - zsh_oh-my-zsh
+  #  - dotfiles
+  #  - git
+  #  - vim
+  #  - sublime
+  #  - vscode
+  #  - tmux
+  #  - linux
+  #  - osx
+  #  - vlc
+  #  - beyond-compare
+  #  - scansnap
     - homebrew_cleanup

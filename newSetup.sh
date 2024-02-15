@@ -1,9 +1,18 @@
 #!/usr/bin/env sh
 #
+# HEAVILY INSPIRED BY/STOLEN FROM ONE OF THE SMARTEST MINDS I KNOW
+# => https://github.com/lony/dotFiles
+#
 # Script prepares operating system with foundation to run Ansible
 # Tools installed depend on operating system and environment
 
-set -ex
+if [ "$TRAVIS" = "true" ]; then
+  set -ex
+elif [ "$CORPORATE" = "true" ]; then
+  set -x
+else
+  set -e
+fi
 
 
 ## Config
@@ -11,7 +20,7 @@ set -ex
 
 GIT_REPO_URL="https://github.com/ozin/dotfiles.git"
 GIT_REPO_BRANCH="main"
-GIT_CLONE_FOLDER="$HOME/Documents/projects/dotfiles"
+GIT_CLONE_FOLDER="$HOME/Documents/projects/private/dotfiles"
 ANSIBLE_PLAYBOOK_PATH="ansible/site.yml"
 ANSIBLE_PLAYBOOK_CMD="ansible-playbook --ask-become-pass --inventory localhost, ${ANSIBLE_PLAYBOOK_PATH}"
 SYSTEM_OS="Unknown"
@@ -54,6 +63,12 @@ status_print() {
   printf "PACKAGE_MANAGER=$PACKAGE_MANAGER\n"
   printf "ROOT_RUN=$ROOT_RUN\n"
   printf "\n"
+
+  if [ "$TRAVIS" = "true" ]; then
+    printf "\n"
+    printf "df -h\n"
+    df -h
+  fi
 }
 
 #######################################
@@ -124,16 +139,25 @@ git_clone() {
 #######################################
 # Execute ansible with provided recipes
 # Globals:
+#   TRAVIS
 #   ANSIBLE_PLAYBOOK_CMD
 # Arguments:
 #   None
 #######################################
 ansible_install_run() {
-  printf "\n### RUN - ${ANSIBLE_PLAYBOOK_CMD} --syntax-check\n"
-  ${ANSIBLE_PLAYBOOK_CMD} --syntax-check
+  if [ "$TRAVIS" = "true" ]; then
+    printf "\n### RUN - ${ANSIBLE_PLAYBOOK_CMD} --syntax-check\n"
+    ${ANSIBLE_PLAYBOOK_CMD} --syntax-check
+  fi
 
   printf "\n### RUN - ${ANSIBLE_PLAYBOOK_CMD}\n"
-  ${ANSIBLE_PLAYBOOK_CMD}
+  if [ "$TRAVIS" = "true" ]; then
+    ${ANSIBLE_PLAYBOOK_CMD} --skip-tags "travis-do-not"
+  elif [ "$CORPORATE" = "true" ]; then
+    ${ANSIBLE_PLAYBOOK_CMD} --skip-tags "corporate-do-not"
+  else
+    ${ANSIBLE_PLAYBOOK_CMD}
+  fi
 }
 
 
@@ -181,6 +205,8 @@ case "${unameOut}" in
       if ! command_exists brew; then
         # Tested against: Homebrew 4.1.1
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
       fi
 
       # Tested against: ansible [core 2.15.2]
