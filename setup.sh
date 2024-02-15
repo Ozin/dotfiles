@@ -165,6 +165,49 @@ ansible_install_run() {
   fi
 }
 
+homebrew_install() {
+      # TODO Install homebrew currently needs admin rights. So make it work without admin privileges
+      # https://www.reddit.com/r/macsysadmin/comments/yf5jsi/homebrew_install_through_an_mdm_script/
+      # https://github.com/Honestpuck/homebrew.sh/tree/master
+      if ! command_exists brew; then
+        # Tested against: Homebrew 4.1.1
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
+
+      if [ "$CORPORATE" = "true" ]; then
+        export HOMEBREW_AUTO_UPDATE_SECS=86400 # update only daily
+        export HOMEBREW_CASK_OPTS='--appdir=~/Applications --fontdir=/Library/Fonts' # recommended
+        export HOMEBREW_INSTALL_CLEANUP=1 # cleanup old stuff after installation
+        export HOMEBREW_NO_ANALYTICS=1 # optional
+      fi
+}
+
+xcode_install() {
+  # https://stackoverflow.com/questions/15371925/how-to-check-if-xcode-command-line-tools-are-installed
+  # https://apple.stackexchange.com/questions/107307/how-can-i-install-the-command-line-tools-completely-from-the-command-line
+  set +e
+  xcode-select -p >/dev/null 2>&1
+  CMD_TOOLS_RETURN_CODE="$?"
+  set -e
+
+  if [ $CMD_TOOLS_RETURN_CODE -ne 0 ]; then
+    printf "Install Apple Command Line Tools for Xcode, "
+    printf "which contains 'git' and other tools needed for homebrew.\n"
+    printf "Please confirm the following dialog with 'Install'.\n"
+
+    xcode-select --install
+
+    # src https://gist.github.com/phuctm97/946b5ced8cbfabc2f34e489c447456b1
+    until $(xcode-select --print-path &> /dev/null); do
+      printf "."
+      sleep 1
+    done
+
+    printf "Apple Command Line Tools for Xcode has finished installing.\n"
+  fi
+}
 
 ## Main
 #
@@ -181,38 +224,8 @@ case "${unameOut}" in
       PACKAGE_MANAGER="brew install"
       status_print
 
-      # https://stackoverflow.com/questions/15371925/how-to-check-if-xcode-command-line-tools-are-installed
-      # https://apple.stackexchange.com/questions/107307/how-can-i-install-the-command-line-tools-completely-from-the-command-line
-      set +e
-      xcode-select -p >/dev/null 2>&1
-      CMD_TOOLS_RETURN_CODE="$?"
-      set -e
-
-      if [ $CMD_TOOLS_RETURN_CODE -ne 0 ]; then
-        printf "Install Apple Command Line Tools for Xcode, "
-        printf "which contains 'git' and other tools needed for homebrew.\n"
-        printf "Please confirm the following dialog with 'Install'.\n"
-
-        xcode-select --install
-
-        # src https://gist.github.com/phuctm97/946b5ced8cbfabc2f34e489c447456b1
-        until $(xcode-select --print-path &> /dev/null); do
-          printf "."
-          sleep 1
-        done
-
-        printf "Apple Command Line Tools for Xcode has finished installing.\n"
-      fi
-
-      # TODO Install homebrew currently needs admin rights. So make it work without admin privileges
-      # https://www.reddit.com/r/macsysadmin/comments/yf5jsi/homebrew_install_through_an_mdm_script/
-      # https://github.com/Honestpuck/homebrew.sh/tree/master
-      if ! command_exists brew; then
-        # Tested against: Homebrew 4.1.1
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-      fi
+      xcode_install
+      homebrew_install
 
       # Tested against: ansible [core 2.15.2]
       # Tested against: Python 3.11.4
