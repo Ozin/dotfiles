@@ -13,6 +13,7 @@ brew_packages:
     - inetutils
     - gawk
     - grep
+    - neovim
     #- ack                                                          # Search tool like grep, but optimized for programmers
     #- ag                                                           # Code-search similar to ack
     - less
