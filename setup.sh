@@ -106,6 +106,10 @@ command_exists() {
 #   $2 Command used to install if missing
 #######################################
 command_install() {
+  if command_exists $1; then
+    printf "\n### NOT INSTALLING $1 - exists already"
+  fi
+
   if ! command_exists $1; then
     printf "\n### INSTALL $1 - run '$ROOT_RUN$2'...\n"
     $ROOT_RUN$2
@@ -134,6 +138,7 @@ git_clone() {
       git clone --depth=1 --branch "$GIT_REPO_BRANCH" "$GIT_REPO_URL" "$GIT_CLONE_FOLDER"
   fi
   cd "$GIT_CLONE_FOLDER"
+  git pull
 }
 
 #######################################
