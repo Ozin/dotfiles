@@ -117,7 +117,7 @@ brew_packages:
     #- ant
     - maven
     #- groovy
-    - graalvm/tap/graalvm-jdk17
+    - graalvm-jdk
 
     # Scala
     #- sbt
