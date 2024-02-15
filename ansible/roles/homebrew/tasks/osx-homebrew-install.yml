@@ -1,0 +1,55 @@
+---
+- name: Check if homebrew is installed (OSX < 12)
+  stat:
+    path: "/usr/local/bin/brew"
+  register: "homebrew_check_11"
+
+- name: Check if homebrew is installed (OSX >= 12 Monterey)
+  stat:
+    path: "/opt/homebrew/bin/brew"
+  register: "homebrew_check_12"
+
+- name: Install homebrew (using CURL)
+  shell: '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+  when: not homebrew_check_11.stat.exists and not homebrew_check_12.stat.exists
+
+- name: homebrew update itself and packages
+  homebrew:
+    update_homebrew: yes
+    upgrade_all: yes
+  when: homebrew_check_11.stat.exists or homebrew_check_12.stat.exists
+
+- name: hombrew list tap's
+  command: brew tap
+  register: brew_tap_list
+
+- name: homebrew add tap's
+  homebrew_tap: "tap={{ item }} state=present"
+  loop: "{{ brew_taps }}"
+  when: "item.name | default(item) not in brew_tap_list.stdout"
+
+- name: hombrew list packages
+  command: brew list --formula
+  register: brew_list
+
+- name: homebrew install packages
+  homebrew:
+    name: "{{ item.name | default(item) }}"
+    install_options: "{{ item.install_options | default(omit) }}"
+    state: present
+  loop: "{{ brew_packages }}"
+  when: "item.name | default(item) not in brew_list.stdout"
+
+- name: hombrew cask list packages
+  command: brew list --cask
+  register: brew_cask_list
+
+- name: homebrew cask install packages
+  homebrew:
+    name: "{{ item.name | default(item) }}"
+    install_options: "{{ item.install_options | default(omit) }}"
+    state: present
+  loop: "{{ brew_cask_packages }}"
+  when: "item.name | default(item) not in brew_cask_list.stdout"
+  tags:
+    - travis-do-not
