@@ -107,7 +107,7 @@ command_exists() {
 #######################################
 command_install() {
   if command_exists $1; then
-    printf "\n### NOT INSTALLING $1 - exists already"
+    printf "\n### NOT INSTALLING $1 - exists already\n"
   fi
 
   if ! command_exists $1; then

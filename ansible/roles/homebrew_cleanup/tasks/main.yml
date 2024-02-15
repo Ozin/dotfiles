@@ -1,5 +1,5 @@
 ---
 
 - name: Execute OSX hombrew cleanup
-  import_tasks: osx-homebrew-cleanup.yaml
+  import_tasks: osx-homebrew-cleanup.yml
   when: ansible_os_family == 'Darwin'
