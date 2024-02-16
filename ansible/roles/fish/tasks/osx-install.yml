@@ -7,7 +7,7 @@
 
 - name: Add fish to /etc/shells
   command: echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
-  when: fish_in_etc_shells.stdout == 0
+  when: fish_in_etc_shells.stdout == "0"
 
 - name: Check if current shell is fish
   command: '[ "$SHELL" == "/usr/local/bin/fish" ] && echo 1 || echo 0'
