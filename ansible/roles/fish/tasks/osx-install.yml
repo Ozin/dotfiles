@@ -1,7 +1,7 @@
 ---
 
 - name: Check if fish is already in /etc/shells
-  command: cat /etc/shells | grep -Fcx /usr/local/bin/fish
+  shell: cat /etc/shells | grep -Fcx /usr/local/bin/fish
   register: fish_in_etc_shells
   ignore_errors: true
 
