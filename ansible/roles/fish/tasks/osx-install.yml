@@ -10,7 +10,7 @@
   when: fish_in_etc_shells.stdout == "0"
 
 - name: Check if current shell is fish
-  command: '[ "$SHELL" == "/usr/local/bin/fish" ] && echo 1 || echo 0'
+  shell: '[ "$SHELL" == "/usr/local/bin/fish" ] && echo 1 || echo 0'
   register: fish_is_current_shell
 
 - name: Install fish as current shell
@@ -23,7 +23,7 @@
   ignore_errors: true
 
 - name: Install fisher package manager
-  command: url -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+  shell: url -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
   when: fisher_installed.rc == 1
 
 - name: List fisher extensions
