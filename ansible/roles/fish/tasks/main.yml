@@ -2,5 +2,5 @@
 
 # Read https://code.visualstudio.com/docs/getstarted/settings
 - name: Execute OSX configuration for Fish Shell
-  import_tasks: osx-install.yaml
+  import_tasks: osx-install.yml
   when: ansible_os_family == 'Darwin'
