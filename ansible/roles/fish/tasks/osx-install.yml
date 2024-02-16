@@ -22,32 +22,35 @@
   register: fisher_installed
   ignore_errors: true
 
-- name: Install fisher package manager
-  shell: curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | . && fisher install jorgebucaran/fisher
+- name: Download fisher package manager
+  get_url:
+    url: "https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish"
+    dest: "/tmp/fisher.fish"
+  when: fisher_installed.rc == 1
+
+- name: Run fisher package manager
+  command: /tmp/fisher.fish
+  when: fisher_installed.rc == 1
+
+- name: Install fisher via fisher
+  command: fisher install jorgebucaran/fisher
   when: fisher_installed.rc == 1
 
 - name: List fisher extensions
   command: fisher list
   register: fisher_extensions_installed
-  when: fisher_installed.rc == 0
 
 - name: Update installed fisher extensions
   command: fisher update {{ item.name | default(item) }}
-  when:
-    - fisher_installed.rc == 0
-    - item in fisher_extensions
+  when: item in fisher_extensions
   loop: "{{ fisher_extensions_installed.stdout_lines }}"
 
 - name: Install missing fisher extensions
   command: fisher install {{ item.name | default(item) }}
-  when:
-    - fisher_installed.rc == 0
-    - item not in fisher_extensions_installed.stdout_lines
+  when: item not in fisher_extensions_installed.stdout_lines
   loop: "{{ fisher_extensions }}"
 
 - name: Uninstall not listed fisher extensions
   command: "fisher remove {{ item.name | default(item) }}"
-  when:
-    - fisher_installed.rc == 0
-    - item not in fisher_extensions
+  when: item not in fisher_extensions
   loop: "{{ fisher_extensions_installed.stdout_lines }}"
