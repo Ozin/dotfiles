@@ -23,7 +23,7 @@
   ignore_errors: true
 
 - name: Install fisher package manager
-  shell: url -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+  shell: curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
   when: fisher_installed.rc == 1
   args:
     executable: /bin/bash
