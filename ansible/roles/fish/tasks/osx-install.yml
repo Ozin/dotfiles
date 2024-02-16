@@ -3,11 +3,11 @@
 - name: Check if fish is already in /etc/shells
   shell: cat /etc/shells | grep -Fcx /usr/local/bin/fish
   register: fish_in_etc_shells
+  ignore_errors: true
 
 - name: List fish in /etc/shells
   shell: echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
   when: fish_in_etc_shells == 0
-  ignore_errors: true
 
 - name: Check if current shell is fish
   shell: '[ "$SHELL" == "/usr/local/bin/fish" ] && echo 1 || echo 0'
