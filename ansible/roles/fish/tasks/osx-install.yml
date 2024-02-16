@@ -29,7 +29,7 @@
   when: fisher_installed.rc == 1
 
 - name: Run fisher package manager
-  command: /tmp/fisher.fish
+  script: /tmp/fisher.fish
   when: fisher_installed.rc == 1
 
 - name: Install fisher via fisher
