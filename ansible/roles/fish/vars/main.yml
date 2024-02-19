@@ -1,4 +1,28 @@
 ---
 
+fish_path: /opt/homebrew/bin/fish
+
+fish_environment_variables:
+  - theme_nerd_fonts yes
+  - theme_title_display_process yes
+  - theme_title_use_abbreviated_path yes
+  #- fish_color_search_match --background=black
+  #- fish_color_command green
+  - HOMEBREW_PREFIX "/opt/homebrew"
+  - HOMEBREW_CELLAR "/opt/homebrew/Cellar"
+  - HOMEBREW_REPOSITORY "/opt/homebrew"
+  - HOMEBREW_AUTO_UPDATE_SECS 86400 # update only daily
+  - HOMEBREW_CASK_OPTS '--appdir=~/Applications --fontdir=/Library/Fonts' # recommended
+  - HOMEBREW_INSTALL_CLEANUP 1 # cleanup old stuff after installation
+  - HOMEBREW_NO_ANALYTICS 1 # optional
+
+
+
 fisher_packages:
-  - 
+  - jorgebucaran/fisher
+  - edc/bass
+  - oh-my-fish/theme-bobthefish
+  - laughedelic/brew-completions
+  - jethrokuan/z
+  - patrickf3139/colored_man_pages.fish
+  - ozin/plugin-git
