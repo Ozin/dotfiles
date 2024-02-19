@@ -1,4 +1,4 @@
 ---
 
 color_theme_url: "https://raw.githubusercontent.com/nordtheme/iterm2/develop/src/xml/Nord.itermcolors"
-iterm2_color_theme_dir: "~/Library/Application Support/iTerm2/DynamicProfiles/"
+iterm2_color_theme_dir: "~/Library/Application Support/iTerm2/DynamicProfiles"

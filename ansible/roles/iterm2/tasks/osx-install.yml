@@ -1,13 +1,4 @@
 ---
-- name: Download color theme file
-  get_url:
-    url: "{{ color_theme_url }}"
-    dest: "/tmp/theme.itermcolors"
+- name: Import iterm.plist
+  command: defaults import com.googlecode.iterm2.plist {{ role_path }}/files/iterm.plist
 
-- name: Copy color theme file to iTerm2 directory
-  copy:
-    src: "/tmp/theme.itermcolors"
-    dest: "{{ iterm2_color_theme_dir }}"
-
-- name: Apply color theme in iTerm2
-  command: '/Applications/iTerm.app/Contents/MacOS/iTerm2 --loadPrefsFromPlist "{{ iterm2_color_theme_dir }}/theme.itermcolors"'
