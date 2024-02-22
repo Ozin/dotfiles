@@ -25,4 +25,5 @@ fisher_packages:
   - laughedelic/brew-completions
   - jethrokuan/z
   - patrickf3139/colored_man_pages.fish
-  - ozin/plugin-git
+  #- ozin/plugin-git
+  - jhillyerd/plugin-git
