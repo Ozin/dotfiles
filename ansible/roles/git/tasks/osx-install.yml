@@ -1,0 +1,21 @@
+---
+
+- name: Creates ~/Documents/projects/private/ directory
+  file:
+    path: ~/Documents/projects/private/
+    state: directory
+    recurse: yes
+
+- name: Link basic git config
+  file:
+    state: link
+    src: "{{ role_path }}/files/gitconfig"
+    dest: "~/.gitconfig"
+    force: yes
+
+- name: Link basic git config
+  file:
+    state: link
+    src: "{{ role_path }}/files/private.gitconfig"
+    dest: "~/Documents/projects/private/.gitconfig"
+    force: yes

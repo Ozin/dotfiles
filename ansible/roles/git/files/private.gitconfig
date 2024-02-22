@@ -1,0 +1,10 @@
+[user]
+	name = Ozin
+	email = Ozin@users.noreply.github.com
+	signingkey = ~/.ssh/al-uf-nb384.pub
+
+[branch]
+	sort = -commiterdate
+
+[gpg]
+	format = ssh

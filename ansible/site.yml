@@ -23,8 +23,9 @@
   #     private: no
 
   roles:
-    #- homebrew
+    - homebrew
     - fish
+    - git
     - iterm2
-    #- vscode
-    #- homebrew_cleanup
+    - vscode
+    - homebrew_cleanup

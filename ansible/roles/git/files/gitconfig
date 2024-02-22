@@ -1,0 +1,40 @@
+[includeIf "gitdir:~/Documents/projects/allianz/"]
+	path = ~/Documents/projects/allianz/.gitconfig
+
+[includeIf "gitdir:~/Documents/projects/private/"]
+	path = ~/Documents/projects/private/.gitconfig
+
+[user]
+	useConfigOnly = true
+
+[pull]
+	rebase = true
+
+[core]
+	pager = diff-so-fancy | less --tabs=4 -+$LESS -RF
+
+[interactive]
+	diffFilter = diff-so-fancy --patch
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[rerere]
+	enabled = true
+
+[column]
+	ui = auto
+
+[maintenance]
