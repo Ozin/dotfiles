@@ -1,0 +1,16 @@
+dockutil:
+  - { name: "Telegram Desktop",                    path: "/Users/michael.ostner/Applications/Telegram%20Desktop.app" }
+  - { name: "Citrix Workspace",                    path: "/Applications/Citrix%20Workspace.app" }
+  - { name: "Spotify",                             path: "/Users/michael.ostner/Applications/Spotify.app" }
+  - { name: "Cisco Secure Client",                 path: "/Applications/Cisco/Cisco%20Secure%20Client.app" }
+  - { name: "Obsidian",                            path: "/Users/michael.ostner/Applications/Obsidian.app" }
+  - { name: "IntelliJ IDEA CE",                    path: "/Users/michael.ostner/Applications/IntelliJ%20IDEA%20CE.app" }
+  - { name: "Visual Studio Code",                  path: "/Users/michael.ostner/Applications/Visual%20Studio%20Code.app" }
+  - { name: "Microsoft Teams (work or school)",    path: "/Applications/Microsoft%20Teams%20(work%20or%20school).app" }
+  - { name: "Microsoft Outlook",                   path: "/Applications/Microsoft%20Outlook.app" }
+  - { name: "Webex",                               path: "/Applications/Webex.app" }
+  - { name: "Firefox",                             path: "/Users/michael.ostner/Applications/Firefox.app" }
+  - { name: "DuckDuckGo",                          path: "/Users/michael.ostner/Applications/DuckDuckGo.app" }
+  - { name: "Self Service",                        path: "/Applications/Self%20Service.app" }
+  - { name: "iTerm",                               path: "/Users/michael.ostner/Applications/iTerm.app" }
+  - { name: "KeePassXC",                           path: "/Users/michael.ostner/Applications/KeePassXC.app" }

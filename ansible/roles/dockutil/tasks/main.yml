@@ -1,0 +1,8 @@
+---
+
+- name: Clean up dock
+  command: dockutil --remove all
+
+- name: Fill dock
+  command: dockutil --add '{{ item.path }}'
+  loop: "{{ dockutil }}"

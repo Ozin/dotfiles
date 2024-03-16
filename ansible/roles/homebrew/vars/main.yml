@@ -21,6 +21,7 @@ brew_packages:
     #- gnu-which
     #- gnu-indent
     #- gnu-getopt
+    - dockutil
 
     - jq                                                            # Lightweight and flexible command-line JSON processor
     #- pv                                                            # Monitor data's progress through a pipe
