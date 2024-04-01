@@ -38,3 +38,5 @@
 	ui = auto
 
 [maintenance]
+[init]
+	defaultBranch = main
