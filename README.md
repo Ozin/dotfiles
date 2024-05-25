@@ -13,6 +13,4 @@ Run
 # Todos
 
 - [ ] use brewfile
-- [ ] go to ansible managed
-  - [ ] https://phelipetls.github.io/posts/introduction-to-ansible/
 - [ ] 
