@@ -1,5 +1,0 @@
----
-
-- name: homebrew cleanup
-  command: "brew cleanup -s"
-  ignore_errors: True
