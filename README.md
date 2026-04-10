@@ -27,7 +27,7 @@ cd ~/projects/private/dotfiles
 | Package | Contents |
 |---------|----------|
 | `zsh/` | `.zshrc` — Oh My Zsh, Starship prompt, SDKMAN, NVM, SSH agent + tmux |
-| `git/` | `.gitconfig`, global `.gitignore`, `.git-hooks/commit-msg` (JIRA prefix + #neo) |
+| `git/` | `.gitconfig`, global `.gitignore`, `.git-hooks/commit-msg` (JIRA ticket prefix) |
 | `omz-plugins/` | Custom OMZ plugin: `gstale` (stale branch management) |
 
 ### Install Scripts (`install/`)
@@ -47,7 +47,7 @@ cd ~/projects/private/dotfiles
 Per-project Git user configs placed by `setup.sh`:
 
 - `private.gitconfig` → `~/projects/private/.gitconfig`
-- `rewe.gitconfig` → `~/projects/rewe/.gitconfig` (only when `CORPORATE=true`)
+- `work.gitconfig` → `~/projects/work/.gitconfig` (only when `CORPORATE=true`)
 
 ## Re-stow After Changes
 
@@ -60,4 +60,4 @@ stow -v -t $HOME zsh git omz-plugins
 
 | Flag | Default | Effect |
 |------|---------|--------|
-| `CORPORATE` | `false` | Enables corporate git context (rewe) |
+| `CORPORATE` | `false` | Enables corporate git context (work) |

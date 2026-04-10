@@ -16,9 +16,5 @@ if [[ "$first_line" != "${formatted_prefix}"* ]]; then
     first_line="${formatted_prefix}${first_line}"
 fi
 
-if [[ "$first_line" != *"#neo"* ]]; then
-    first_line="${first_line} #neo"
-fi
-
 { printf '%s\n' "$first_line"; tail -n +2 "$commit_msg_file"; } > "${commit_msg_file}.tmp"
 mv "${commit_msg_file}.tmp" "$commit_msg_file"

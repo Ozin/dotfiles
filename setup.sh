@@ -103,11 +103,11 @@ place_git_contexts() {
   cp "$DOTFILES_DIR/git-contexts/private.gitconfig" "$HOME/projects/private/.gitconfig"
   ok "Placed ~/projects/private/.gitconfig"
 
-  # Corporate (rewe)
+  # Corporate (work)
   if [ "$CORPORATE" = "true" ]; then
-    mkdir -p "$HOME/projects/rewe"
-    cp "$DOTFILES_DIR/git-contexts/rewe.gitconfig" "$HOME/projects/rewe/.gitconfig"
-    ok "Placed ~/projects/rewe/.gitconfig"
+    mkdir -p "$HOME/projects/work"
+    cp "$DOTFILES_DIR/git-contexts/work.gitconfig" "$HOME/projects/work/.gitconfig"
+    ok "Placed ~/projects/work/.gitconfig"
   else
     info "Skipping corporate git context (set CORPORATE=true to enable)"
   fi

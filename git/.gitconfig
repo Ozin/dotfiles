@@ -1,16 +1,14 @@
-[includeIf "gitdir:~/projects/rewe/"]
-	path = ~/projects/rewe/.gitconfig
+[includeIf "gitdir:~/projects/work/"]
+	path = ~/projects/work/.gitconfig
 
 [includeIf "gitdir:~/projects/private/"]
 	path = ~/projects/private/.gitconfig
 
-[includeIf "gitdir:/mnt/c/Users/A2004D0/Documents/projects/rewe/"]
-	path = /mnt/c/Users/A2004D0/Documents/projects/rewe/.gitconfig
+[includeIf "gitdir:/mnt/c/Users/A2004D0/Documents/projects/work/"]
+	path = /mnt/c/Users/A2004D0/Documents/projects/work/.gitconfig
 
 [user]
 	useConfigOnly = true
-	name = Michael Ostner
-	email = michael.ostner@rewe-group.com
 
 [pull]
 	rebase = true
