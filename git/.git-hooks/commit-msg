@@ -1,0 +1,24 @@
+#!/bin/bash
+
+branch_name=$(git rev-parse --abbrev-ref HEAD)
+
+if [[ "$branch_name" =~ ^[^/]+/([^-]+-[0-9]+)-? ]]; then
+    prefix="${BASH_REMATCH[1]}"
+    formatted_prefix="${prefix^^}: "
+else
+    exit 0
+fi
+
+commit_msg_file="$1"
+first_line=$(head -1 "$commit_msg_file")
+
+if [[ "$first_line" != "${formatted_prefix}"* ]]; then
+    first_line="${formatted_prefix}${first_line}"
+fi
+
+if [[ "$first_line" != *"#neo"* ]]; then
+    first_line="${first_line} #neo"
+fi
+
+{ printf '%s\n' "$first_line"; tail -n +2 "$commit_msg_file"; } > "${commit_msg_file}.tmp"
+mv "${commit_msg_file}.tmp" "$commit_msg_file"

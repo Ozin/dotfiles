@@ -1,0 +1,4 @@
+.zsh_history
+*.swp
+*.swo
+*~

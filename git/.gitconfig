@@ -1,0 +1,53 @@
+[includeIf "gitdir:~/projects/rewe/"]
+	path = ~/projects/rewe/.gitconfig
+
+[includeIf "gitdir:~/projects/private/"]
+	path = ~/projects/private/.gitconfig
+
+[includeIf "gitdir:/mnt/c/Users/A2004D0/Documents/projects/rewe/"]
+	path = /mnt/c/Users/A2004D0/Documents/projects/rewe/.gitconfig
+
+[user]
+	useConfigOnly = true
+	name = Michael Ostner
+	email = michael.ostner@rewe-group.com
+
+[pull]
+	rebase = true
+
+[core]
+	pager = diff-so-fancy | less --tabs=4 -+$LESS -RF
+	autocrlf = true
+	fileMode = false
+	hooksPath = ~/.git-hooks
+	excludesFile = ~/.gitignore
+
+[interactive]
+	diffFilter = diff-so-fancy --patch
+
+[color]
+	ui = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[rerere]
+	enabled = true
+
+[column]
+	ui = auto
+
+[init]
+	defaultBranch = main
