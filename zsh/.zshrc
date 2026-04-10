@@ -3,7 +3,7 @@ fpath=("$HOME/.oh-my-zsh/custom/completions" $fpath)
 autoload -Uz compinit
 compinit
 
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/.dprint/bin:$PATH
 
 # Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"

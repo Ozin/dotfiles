@@ -96,4 +96,14 @@ else
   echo "tree-sitter ${TS_VERSION} installed to $OPT_DIR/tree-sitter/, symlinked to $INSTALL_DIR/tree-sitter"
 fi
 
+# --- dprint ---
+echo "🖨️  Installing dprint..."
+
+if command -v dprint &>/dev/null; then
+  echo "dprint already installed, skipping"
+else
+  curl -fsSL https://dprint.dev/install.sh | sh
+  echo "dprint installed to ~/.dprint/bin/dprint"
+fi
+
 echo "✅ Tools installed"
