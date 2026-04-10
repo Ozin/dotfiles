@@ -81,7 +81,7 @@ stow_packages() {
     sudo apt-get install -y -qq stow
   fi
 
-  local packages=(zsh git omz-plugins bin)
+  local packages=(zsh git omz-plugins bin tmux k9s dprint)
 
   for pkg in "${packages[@]}"; do
     if [ -d "$DOTFILES_DIR/$pkg" ]; then
@@ -125,10 +125,21 @@ set_default_shell() {
   fi
 }
 
-## Make git hooks executable
+## Make git hooks executable + install tmux plugins
 
 fix_permissions() {
   chmod +x "$HOME/.git-hooks/commit-msg" 2>/dev/null || true
+}
+
+install_tmux_plugins() {
+  local tpm_dir="$HOME/.config/tmux/plugins/tpm"
+  if [ ! -d "$tpm_dir" ]; then
+    info "Installing TPM (Tmux Plugin Manager)..."
+    git clone --depth=1 https://github.com/tmux-plugins/tpm "$tpm_dir"
+    ok "TPM installed — run 'prefix + I' inside tmux to install plugins"
+  else
+    ok "TPM already installed"
+  fi
 }
 
 ## Main
@@ -147,6 +158,7 @@ main() {
   stow_packages
   place_git_contexts
   fix_permissions
+  install_tmux_plugins
   set_default_shell
 
   ok "Dotfiles setup complete! 🎉"
