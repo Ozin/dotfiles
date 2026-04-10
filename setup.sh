@@ -81,7 +81,7 @@ stow_packages() {
     sudo apt-get install -y -qq stow
   fi
 
-  local packages=(zsh git omz-plugins)
+  local packages=(zsh git omz-plugins bin)
 
   for pkg in "${packages[@]}"; do
     if [ -d "$DOTFILES_DIR/$pkg" ]; then

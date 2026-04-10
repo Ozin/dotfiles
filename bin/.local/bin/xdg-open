@@ -1,0 +1,3 @@
+#!/bin/sh
+# xdg-open override for WSL — opens in Windows default app
+powershell.exe -c start "'$@'"

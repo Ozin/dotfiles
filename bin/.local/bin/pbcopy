@@ -1,0 +1,4 @@
+#!/bin/bash
+# pbcopy for WSL — pipe stdin to Windows clipboard
+iconv -f UTF-8 -t UTF-16LE | clip.exe
+exit 0

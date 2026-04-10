@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# wslopen - Open files/URLs in the default Windows application from WSL
+# Usage: wslopen <file_or_url> [file_or_url ...]
+
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+  echo "Usage: wslopen <file_or_url> [file_or_url ...]" >&2
+  exit 1
+fi
+
+for target in "$@"; do
+  if [[ -e "$target" ]]; then
+    winpath=$(wslpath -w "$target")
+  else
+    winpath="$target"
+  fi
+  /mnt/c/WINDOWS/explorer.exe "$winpath" 2>/dev/null || true
+done
