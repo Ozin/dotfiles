@@ -1,102 +1,75 @@
-# Dotfiles — Concepts from Previous Setup
+# Dotfiles — Concepts
 
-This document captures the ideas, tools, and configurations from the previous dotfiles iteration
-so they can inform a fresh rewrite.
+This document captures the design philosophy and key decisions for this dotfiles repo.
 
 ## Bootstrap Strategy
 
 - Single entry point: `setup.sh` curl-able from GitHub (`curl | bash` pattern)
-- OS detection (macOS / Linux) with per-OS install paths
+- WSL2 / Ubuntu only (no macOS support)
 - Supports environment flags: `CORPORATE=true` for corporate-specific settings
-- Installs prerequisites first (Xcode CLI tools → Homebrew → Ansible), then hands off to Ansible
+- `setup.sh` is minimal: clone repo → install Ansible → run playbook
 
 ## Automation
 
 - **Ansible** with local connection (`hosts: localhost`), roles-based structure
-- Roles: `homebrew`, `fish`, `git`, `iterm2`, `vscode`, `dockutil`, `macos`, `homebrew_cleanup`
-- An older **shell-script layer** coexisted (`01_brew/`, `02_set_shell/`, `03_config/`) — was partially superseded by Ansible
-- Inspired by [github.com/lony/dotFiles](https://github.com/lony/dotFiles)
+- Roles: `apt`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
+- Each role tagged for selective execution (`--tags "shell,git"`)
+- Variables (tool versions, feature flags) in `ansible/group_vars/all.yml`
+- Config files stored in `files/` and placed via Ansible `copy` module
 
-## Package Management (Homebrew)
+## Package Management (APT)
 
-### Taps
+Core CLI tools installed via apt role:
+bat, coreutils, curl, diffutils, findutils, gcc, gnupg, golang, grep, gzip,
+highlight, jq, make, maven, mkcert, openjdk-21-jdk, openjdk-25-jdk, podman,
+python3.12-venv, ripgrep, tmux, tree, unzip, wslu, x11-apps, xclip, zip, zsh
 
-- `homebrew/cask-fonts`
+## Shell — Zsh
 
-### Formulae (selection of what was actively used)
-
-- **Core CLI**: coreutils, binutils, diffutils, findutils, inetutils, gawk, grep, less, curl, tree, watch, htop, jq, brotli
-- **Shell**: bash, fish
-- **Git**: git, diff-so-fancy, grc
-- **Security**: gnupg, openssl, ssh-copy-id
-- **Dev tools**: neovim, asdf, ansible, dockutil, z, screen
-- **Java**: openjdk, maven, graalvm-jdk
-- **JavaScript**: node
-- **Cloud/Infra**: awscli
-
-### Casks (selection of what was actively used)
-
-- **Browsers**: Firefox, Brave, DuckDuckGo
-- **Terminal**: iTerm2
-- **Editor/IDE**: Visual Studio Code, IntelliJ IDEA CE
-- **Fonts**: JetBrains Mono, Monaspace, Monaspace Nerd Font
-- **Productivity**: Obsidian, Dropbox, TomatoBar, Telegram, Webex, Spotify, DrawIO, GIMP
-- **Security**: KeePassXC, Keystore Explorer, AlDente (battery)
-- **DevOps**: Docker, kubernetes-cli, k9s, Helm
-- **Java**: IntelliJ IDEA CE
-
-## Shell — Fish
-
-- **Plugin manager**: Fisher
-- **Theme**: bobthefish (with Nerd Fonts enabled, terminal-dark base, custom dirty/staged colors)
-- **Plugins**: fisher, bass, bobthefish, brew-completions, z, colored_man_pages, custom git plugin (`ozin/plugin-git`)
-- **Abbreviations**: `-` → `cd -`, `...` → `cd ../../`, etc.
-- **Path additions**: `~/bin`, `/usr/local/sbin`, Homebrew paths, OpenJDK
-- **Config**: `config.fish` symlinked into `~/.config/fish/`
-- **Computer-specific overrides**: sourced from a separate `computer_specific.fish` file (gitignored)
+- **Framework**: Oh My Zsh (installed via official script)
+- **Prompt**: Starship
+- **Plugins**: git, z, diff-so-fancy, kubectl, mvn, gradle, helm, python, gstale (custom)
+- **Custom aliases**: vim/vi/v → nvim, dotenv helper, git push hyperlinks
+- **Path**: `~/.local/bin`, `~/.dprint/bin`
 
 ## Git
 
-- **Conditional includes**: per-directory `.gitconfig` (e.g. `~/Documents/projects/allianz/`, `~/Documents/projects/private/`)
+- **Conditional includes**: per-directory `.gitconfig` (`~/projects/work/`, `~/projects/private/`)
 - `user.useConfigOnly = true` — forces explicit user config per repo context
-- `pull.rebase = true`
-- `rerere.enabled = true`
-- `column.ui = auto`
+- `pull.rebase = true`, `rerere.enabled = true`, `column.ui = auto`
 - `init.defaultBranch = main`
-- **Diff**: diff-so-fancy as core pager with custom color scheme
+- **Diff**: diff-so-fancy as core pager
+- **Hooks**: `~/.git-hooks/commit-msg` (JIRA ticket prefix from branch name)
 
-## Terminal — iTerm2
+## Tools Installed from External Sources
 
-- Material Design color scheme
-- JetBrains Mono / Monaspace Nerd Fonts
-- Settings managed via plist file
-
-## Editor — VS Code
-
-- Settings symlinked from dotfiles repo
-- **Theme**: Nord, Material Theme
-- **Key extensions**: GitLens, Prettier, ESLint, Docker, Java pack (RedHat + vscjava), Rust Analyzer, Svelte, YAML/XML, Markdown All in One, indent-rainbow, Fish syntax, OpenAPI lint, Live Server
-
-## macOS Settings
-
-- **Locale**: German (`de_DE`), EUR currency, metric units
-- **Timezone**: Europe/Berlin
-- **Clock**: `EEE d. MMM HH:mm:ss` format in menu bar
-- **Trackpad**: Tap-to-click enabled
-- **Boot**: System audio volume silenced
-- **Battery**: Percentage shown in menu bar
-- **Keyboard**: Disabled "Search man Page" shortcut, hidden input menu selector
-
-## Dock (via dockutil)
-
-Curated app order: Telegram, Citrix Workspace, Spotify, Obsidian, IntelliJ, VS Code,
-Teams, Outlook, Webex, Firefox, DuckDuckGo, iTerm, KeePassXC
+| Tool | Method |
+|------|--------|
+| Oh My Zsh | installer script |
+| Starship | installer script |
+| SDKMAN + Gradle | installer script |
+| NVM + Node.js LTS | installer script |
+| Neovim | AppImage → /opt/nvim/, symlink ~/.local/bin/nvim |
+| kickstart.nvim | git clone → ~/.config/nvim |
+| k9s | GitHub release tar → ~/.local/bin/k9s |
+| Syft | GitHub release tar → ~/.local/bin/syft |
+| Terraform | HashiCorp zip → ~/.local/bin/terraform |
+| OpenTofu | snap → symlink ~/.local/bin/tofu |
+| tree-sitter | GitHub release gz → /opt/tree-sitter/, symlink ~/.local/bin/tree-sitter |
+| dprint | installer script → ~/.dprint/bin/dprint |
+| kubectl | Kubernetes apt repo |
+| Helm | installer script |
+| TPM | git clone → ~/.config/tmux/plugins/tpm |
 
 ## Corporate Environment
 
 When `CORPORATE=true`:
-- `HOMEBREW_AUTO_UPDATE_SECS=86400` (daily updates only)
-- `HOMEBREW_CASK_OPTS='--appdir=~/Applications --fontdir=/Library/Fonts'`
-- `HOMEBREW_INSTALL_CLEANUP=1`
-- `HOMEBREW_NO_ANALYTICS=1`
-- Ansible skips tags marked `corporate-do-not`
+- Work git context placed at `~/projects/work/.gitconfig`
+
+## Design Principles
+
+1. **Idempotent** — every role safe to re-run without side effects
+2. **Tagged** — selective execution via `--tags`
+3. **Declarative** — Ansible modules handle state convergence
+4. **No templating** — config files copied as-is (no variables to inject)
+5. **Minimal bootstrap** — `setup.sh` only ensures git + ansible, then delegates

@@ -1,0 +1,18 @@
+# Feature flags
+corporate: false
+
+# User directories
+home_dir: "{{ ansible_env.HOME }}"
+local_bin: "{{ home_dir }}/.local/bin"
+opt_dir: "/opt"
+dotfiles_dir: "{{ playbook_dir | dirname }}"
+
+# Kubernetes
+kubectl_repo_version: "v1.33"
+
+# Tool versions (use "latest" to fetch from GitHub API at runtime)
+neovim_version: "latest"
+k9s_version: "latest"
+syft_version: "latest"
+terraform_version: "latest"
+tree_sitter_version: "latest"

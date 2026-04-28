@@ -1,0 +1,53 @@
+---
+- name: Add Kubernetes apt signing key
+  become: true
+  ansible.builtin.shell: |
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/{{ kubectl_repo_version }}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  args:
+    creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+- name: Add Kubernetes apt repository
+  become: true
+  ansible.builtin.copy:
+    content: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ kubectl_repo_version }}/deb/ /\n"
+    dest: /etc/apt/sources.list.d/kubernetes.list
+    mode: "0644"
+
+- name: Install kubectl
+  become: true
+  ansible.builtin.apt:
+    name: kubectl
+    state: present
+    update_cache: true
+
+- name: Install Helm
+  ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  args:
+    creates: /usr/local/bin/helm
+
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: "{{ local_bin }}"
+    state: directory
+    mode: "0755"
+
+- name: Get latest k9s version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/derailed/k9s/releases/latest
+    return_content: true
+  register: k9s_release
+  when: k9s_version == "latest"
+
+- name: Set k9s download version
+  ansible.builtin.set_fact:
+    k9s_dl_version: "{{ k9s_release.json.tag_name if k9s_version == 'latest' else k9s_version }}"
+
+- name: Install k9s
+  ansible.builtin.unarchive:
+    src: "https://github.com/derailed/k9s/releases/download/{{ k9s_dl_version }}/k9s_Linux_amd64.tar.gz"
+    dest: "{{ local_bin }}"
+    remote_src: true
+    include:
+      - k9s
+    mode: "0755"
+    creates: "{{ local_bin }}/k9s"

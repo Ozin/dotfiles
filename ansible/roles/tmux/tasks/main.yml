@@ -1,0 +1,13 @@
+---
+- name: Ensure tmux config directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/tmux"
+    state: directory
+    mode: "0755"
+
+- name: Install TPM (Tmux Plugin Manager)
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm.git
+    dest: "{{ home_dir }}/.config/tmux/plugins/tpm"
+    depth: 1
+    update: false

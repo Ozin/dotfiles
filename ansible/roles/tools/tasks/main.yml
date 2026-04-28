@@ -1,0 +1,137 @@
+---
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: "{{ local_bin }}"
+    state: directory
+    mode: "0755"
+
+# --- Neovim ---
+
+- name: Create Neovim opt directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ opt_dir }}/nvim"
+    state: directory
+    mode: "0755"
+
+- name: Download Neovim AppImage
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
+    dest: "{{ opt_dir }}/nvim/nvim-linux-x86_64.appimage"
+    mode: "0755"
+
+- name: Symlink Neovim to local bin
+  ansible.builtin.file:
+    src: "{{ opt_dir }}/nvim/nvim-linux-x86_64.appimage"
+    dest: "{{ local_bin }}/nvim"
+    state: link
+
+# --- kickstart.nvim ---
+
+- name: Clone kickstart.nvim
+  ansible.builtin.git:
+    repo: https://github.com/nvim-lua/kickstart.nvim.git
+    dest: "{{ home_dir }}/.config/nvim"
+    depth: 1
+    update: false
+
+# --- Syft ---
+
+- name: Get latest Syft version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/anchore/syft/releases/latest
+    return_content: true
+  register: syft_release
+  when: syft_version == "latest"
+
+- name: Set Syft download version
+  ansible.builtin.set_fact:
+    syft_dl_version: "{{ (syft_release.json.tag_name | regex_replace('^v', '')) if syft_version == 'latest' else syft_version }}"
+
+- name: Install Syft
+  ansible.builtin.unarchive:
+    src: "https://github.com/anchore/syft/releases/download/v{{ syft_dl_version }}/syft_{{ syft_dl_version }}_linux_amd64.tar.gz"
+    dest: "{{ local_bin }}"
+    remote_src: true
+    include:
+      - syft
+    mode: "0755"
+    creates: "{{ local_bin }}/syft"
+
+# --- Terraform ---
+
+- name: Get latest Terraform version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/hashicorp/terraform/releases/latest
+    return_content: true
+  register: terraform_release
+  when: terraform_version == "latest"
+
+- name: Set Terraform download version
+  ansible.builtin.set_fact:
+    terraform_dl_version: "{{ (terraform_release.json.tag_name | regex_replace('^v', '')) if terraform_version == 'latest' else terraform_version }}"
+
+- name: Download and extract Terraform
+  ansible.builtin.unarchive:
+    src: "https://releases.hashicorp.com/terraform/{{ terraform_dl_version }}/terraform_{{ terraform_dl_version }}_linux_amd64.zip"
+    dest: "{{ local_bin }}"
+    remote_src: true
+    mode: "0755"
+    creates: "{{ local_bin }}/terraform"
+
+# --- OpenTofu ---
+
+- name: Install OpenTofu via snap
+  become: true
+  community.general.snap:
+    name: opentofu
+    classic: true
+
+- name: Symlink OpenTofu to local bin
+  ansible.builtin.file:
+    src: /snap/opentofu/current/tofu
+    dest: "{{ local_bin }}/tofu"
+    state: link
+    force: true
+
+# --- tree-sitter ---
+
+- name: Create tree-sitter opt directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ opt_dir }}/tree-sitter"
+    state: directory
+    mode: "0755"
+
+- name: Get latest tree-sitter version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/tree-sitter/tree-sitter/releases/latest
+    return_content: true
+  register: tree_sitter_release
+  when: tree_sitter_version == "latest"
+
+- name: Set tree-sitter download version
+  ansible.builtin.set_fact:
+    tree_sitter_dl_version: "{{ tree_sitter_release.json.tag_name if tree_sitter_version == 'latest' else tree_sitter_version }}"
+
+- name: Download tree-sitter
+  become: true
+  ansible.builtin.shell: |
+    curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/download/{{ tree_sitter_dl_version }}/tree-sitter-linux-x64.gz" | gunzip > "{{ opt_dir }}/tree-sitter/tree-sitter-linux-x64"
+    chmod +x "{{ opt_dir }}/tree-sitter/tree-sitter-linux-x64"
+  args:
+    creates: "{{ opt_dir }}/tree-sitter/tree-sitter-linux-x64"
+
+- name: Symlink tree-sitter to local bin
+  ansible.builtin.file:
+    src: "{{ opt_dir }}/tree-sitter/tree-sitter-linux-x64"
+    dest: "{{ local_bin }}/tree-sitter"
+    state: link
+
+# --- dprint ---
+
+- name: Install dprint
+  ansible.builtin.shell: curl -fsSL https://dprint.dev/install.sh | sh
+  args:
+    creates: "{{ home_dir }}/.dprint/bin/dprint"

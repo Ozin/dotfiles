@@ -1,0 +1,40 @@
+---
+- name: Update apt cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install apt packages
+  become: true
+  ansible.builtin.apt:
+    name:
+      - bat
+      - coreutils
+      - curl
+      - diffutils
+      - findutils
+      - gcc
+      - gnupg
+      - golang
+      - grep
+      - gzip
+      - highlight
+      - jq
+      - make
+      - maven
+      - mkcert
+      - openjdk-21-jdk
+      - openjdk-25-jdk
+      - podman
+      - python3.12-venv
+      - ripgrep
+      - tmux
+      - tree
+      - unzip
+      - wslu
+      - x11-apps
+      - xclip
+      - zip
+      - zsh
+    state: present

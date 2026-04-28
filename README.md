@@ -1,6 +1,6 @@
 # Dotfiles
 
-Personal dev environment for WSL2 / Ubuntu. Managed with [GNU Stow](https://www.gnu.org/software/stow/) + shell scripts.
+Personal dev environment for WSL2 / Ubuntu. Managed with [Ansible](https://docs.ansible.com/).
 
 ## Quick Start
 
@@ -20,44 +20,75 @@ cd ~/projects/private/dotfiles
 ./setup.sh
 ```
 
-## What's Inside
-
-### Stow Packages (config files → `$HOME`)
-
-| Package | Contents |
-|---------|----------|
-| `zsh/` | `.zshrc` — Oh My Zsh, Starship prompt, SDKMAN, NVM, SSH agent + tmux |
-| `git/` | `.gitconfig`, global `.gitignore`, `.git-hooks/commit-msg` (JIRA ticket prefix) |
-| `omz-plugins/` | Custom OMZ plugin: `gstale` (stale branch management) |
-
-### Install Scripts (`install/`)
-
-| Script | Installs |
-|--------|----------|
-| `apt.sh` | Core CLI tools, podman, Java, Go, zsh |
-| `omz.sh` | Oh My Zsh |
-| `starship.sh` | Starship prompt |
-| `sdkman.sh` | SDKMAN + Gradle |
-| `nvm.sh` | NVM + Node.js LTS |
-| `tools.sh` | Neovim, k9s |
-| `k8s.sh` | kubectl, Helm |
-
-### Git Contexts (`git-contexts/`)
-
-Per-project Git user configs placed by `setup.sh`:
-
-- `private.gitconfig` → `~/projects/private/.gitconfig`
-- `work.gitconfig` → `~/projects/work/.gitconfig` (only when `CORPORATE=true`)
-
-## Re-stow After Changes
+## Re-run Specific Roles
 
 ```bash
 cd ~/projects/private/dotfiles
-stow -v -t $HOME zsh git omz-plugins
+ansible-playbook ansible/site.yml -i ansible/inventory/localhost.yml --tags "shell,git"
 ```
+
+Available tags: `apt`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
+
+## Structure
+
+```
+dotfiles/
+├── setup.sh              # Bootstrap: clone, install ansible, run playbook
+├── ansible/
+│   ├── site.yml          # Main playbook
+│   ├── inventory/
+│   ├── group_vars/all.yml
+│   └── roles/            # apt, shell, git, sdkman, nvm, tools, k8s, tmux, dotfiles
+├── files/                # Config file sources (copied to $HOME by dotfiles role)
+│   ├── zshrc
+│   ├── gitconfig
+│   ├── gitignore_global
+│   ├── git-hooks/
+│   ├── tmux.conf
+│   ├── k9s/
+│   ├── dprint/
+│   ├── omz-plugins/
+│   ├── bin/
+│   └── git-contexts/
+├── docs/adr/
+├── AGENTS.md
+├── CONCEPTS.md
+└── README.md
+```
+
+## What's Managed
+
+### Ansible Roles
+
+| Role | Installs / Configures |
+|------|----------------------|
+| `apt` | Core CLI tools, podman, Java, Go, zsh |
+| `shell` | Oh My Zsh, Starship prompt, sets zsh as default shell |
+| `git` | Git contexts (private + work when CORPORATE=true) |
+| `sdkman` | SDKMAN + Gradle |
+| `nvm` | NVM + Node.js LTS |
+| `tools` | Neovim, Syft, Terraform, OpenTofu, tree-sitter, dprint |
+| `k8s` | kubectl, Helm, k9s |
+| `tmux` | TPM (Tmux Plugin Manager) |
+| `dotfiles` | All config files → `$HOME` (replaces Stow) |
+
+### Config Files (`files/`)
+
+| Source | Target |
+|--------|--------|
+| `zshrc` | `~/.zshrc` |
+| `gitconfig` | `~/.gitconfig` |
+| `gitignore_global` | `~/.gitignore` |
+| `git-hooks/commit-msg` | `~/.git-hooks/commit-msg` |
+| `tmux.conf` | `~/.config/tmux/tmux.conf` |
+| `k9s/` | `~/.config/k9s/` |
+| `dprint/dprint.jsonc` | `~/.config/dprint/dprint.jsonc` |
+| `omz-plugins/aliases.zsh` | `~/.oh-my-zsh/custom/aliases.zsh` |
+| `omz-plugins/plugins/gstale/` | `~/.oh-my-zsh/custom/plugins/gstale/` |
+| `bin/` | `~/.local/bin/` (pbcopy, pbpaste, wslopen, xdg-open) |
 
 ## Environment Flags
 
 | Flag | Default | Effect |
 |------|---------|--------|
-| `CORPORATE` | `false` | Enables corporate git context (work) |
+| `CORPORATE` | `false` | Places work git context at `~/projects/work/.gitconfig` |

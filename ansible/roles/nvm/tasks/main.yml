@@ -1,0 +1,16 @@
+---
+- name: Install NVM
+  ansible.builtin.shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+  args:
+    creates: "{{ home_dir }}/.nvm/nvm.sh"
+  environment:
+    NVM_DIR: "{{ home_dir }}/.nvm"
+
+- name: Install Node.js LTS via NVM
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ home_dir }}/.nvm"
+    . "$NVM_DIR/nvm.sh"
+    nvm install --lts
+  args:
+    executable: /bin/bash
+    creates: "{{ home_dir }}/.nvm/versions/node"

@@ -1,0 +1,22 @@
+---
+- name: Create projects directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ home_dir }}/projects/private"
+    - "{{ home_dir }}/projects/work"
+
+- name: Place private git context
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/git-contexts/private.gitconfig"
+    dest: "{{ home_dir }}/projects/private/.gitconfig"
+    mode: "0644"
+
+- name: Place work git context
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/git-contexts/work.gitconfig"
+    dest: "{{ home_dir }}/projects/work/.gitconfig"
+    mode: "0644"
+  when: corporate | bool

@@ -1,6 +1,6 @@
 # 0001 — Use GNU Stow for symlink management
 
-**Status:** accepted
+**Status:** superseded by [0002](0002-switch-to-ansible.md)
 **Date:** 2026-04-28
 
 ## Context

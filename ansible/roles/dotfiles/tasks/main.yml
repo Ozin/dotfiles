@@ -1,0 +1,104 @@
+---
+# Replaces GNU Stow — places all config files via copy/link
+
+- name: Ensure target directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ home_dir }}/.local/bin"
+    - "{{ home_dir }}/.git-hooks"
+    - "{{ home_dir }}/.oh-my-zsh/custom"
+    - "{{ home_dir }}/.oh-my-zsh/custom/plugins/gstale"
+    - "{{ home_dir }}/.config/tmux"
+    - "{{ home_dir }}/.config/k9s/skins"
+    - "{{ home_dir }}/.config/dprint"
+
+# --- zsh ---
+
+- name: Copy .zshrc
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/zshrc"
+    dest: "{{ home_dir }}/.zshrc"
+    mode: "0644"
+
+# --- git ---
+
+- name: Copy .gitconfig
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/gitconfig"
+    dest: "{{ home_dir }}/.gitconfig"
+    mode: "0644"
+
+- name: Copy global .gitignore
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/gitignore_global"
+    dest: "{{ home_dir }}/.gitignore"
+    mode: "0644"
+
+- name: Copy git commit-msg hook
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/git-hooks/commit-msg"
+    dest: "{{ home_dir }}/.git-hooks/commit-msg"
+    mode: "0755"
+
+# --- omz plugins ---
+
+- name: Copy OMZ custom aliases
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/omz-plugins/aliases.zsh"
+    dest: "{{ home_dir }}/.oh-my-zsh/custom/aliases.zsh"
+    mode: "0644"
+
+- name: Copy gstale plugin
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/omz-plugins/plugins/gstale/gstale.plugin.zsh"
+    dest: "{{ home_dir }}/.oh-my-zsh/custom/plugins/gstale/gstale.plugin.zsh"
+    mode: "0644"
+
+# --- bin scripts ---
+
+- name: Copy bin scripts
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/bin/{{ item }}"
+    dest: "{{ home_dir }}/.local/bin/{{ item }}"
+    mode: "0755"
+  loop:
+    - pbcopy
+    - pbpaste
+    - wslopen
+    - xdg-open
+
+# --- tmux ---
+
+- name: Copy tmux.conf
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/tmux.conf"
+    dest: "{{ home_dir }}/.config/tmux/tmux.conf"
+    mode: "0644"
+
+# --- k9s ---
+
+- name: Copy k9s config files
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/k9s/{{ item }}"
+    dest: "{{ home_dir }}/.config/k9s/{{ item }}"
+    mode: "0644"
+  loop:
+    - config.yaml
+    - aliases.yaml
+
+- name: Copy k9s nord skin
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/k9s/skins/nord.yaml"
+    dest: "{{ home_dir }}/.config/k9s/skins/nord.yaml"
+    mode: "0644"
+
+# --- dprint ---
+
+- name: Copy dprint config
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/files/dprint/dprint.jsonc"
+    dest: "{{ home_dir }}/.config/dprint/dprint.jsonc"
+    mode: "0644"

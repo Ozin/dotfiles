@@ -55,7 +55,7 @@ Every task, also consider:
 1. **CONCEPTS.md** — Decision contradicts/extends it? Update.
 2. **README.md** — Keep accurate. Add/remove packages or steps? Reflect here.
 3. **Structure** — Wrong place or unclear name? Fix or propose.
-4. **Automation gaps** — Manual step scriptable? Add to `install/` or `setup.sh`.
+4. **Automation gaps** — Manual step scriptable? Add as Ansible task in the appropriate role.
 5. **Dead code** — Tool no longer used? Remove config.
 
 ## Commit Style
@@ -68,4 +68,5 @@ Every task, also consider:
 
 - Shell: `bash`, `set -euo pipefail`, shellcheck-clean
 - Config files: comment non-obvious settings
-- Stow packages: one dir per tool at repo root, mirror `$HOME`
+- Ansible roles: one role per concern under `ansible/roles/`
+- Config sources: plain files under `files/`, copied by the `dotfiles` role
