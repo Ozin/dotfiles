@@ -5,26 +5,37 @@ compinit
 
 export PATH=$HOME/.local/bin:$HOME/.dprint/bin:$PATH
 
-# Oh My Zsh
+# Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time Oh My Zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME=""
 
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Add wisely, as too many plugins slow down shell startup.
 plugins=(git z diff-so-fancy kubectl mvn gradle helm python gstale)
 
 source $ZSH/oh-my-zsh.sh
 
-# Editor
+# Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
   export EDITOR='nvim'
 fi
 
-# Java
+# Set JAVA_HOME to current version from update-alternatives
 export JAVA_HOME=$(readlink -nf $(which java) | xargs dirname | xargs dirname)
+
+# Set Maven Home for IntelliJ
 export M2_HOME=$HOME/.sdkman/candidates/maven/current/bin/mvn
 
-# Starship prompt
+# Init starship
 eval "$(starship init zsh)"
 
 # SSH agent with tmux persistence
@@ -35,11 +46,11 @@ if [ -z "${SSH_AUTH_SOCK:-}" ] || [ -z "${SSH_AGENT_PID:-}" ] || ! ps -p "${SSH_
   tmux set-environment -g SSH_AUTH_SOCK "$SSH_AUTH_SOCK" 2>/dev/null || true
 fi
 
-# SDKMAN (must be near end)
+# THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# NVM (must be at end)
+# NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
