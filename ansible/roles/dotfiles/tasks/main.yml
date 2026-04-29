@@ -56,6 +56,13 @@
     state: link
     force: true
 
+- name: Symlink OMZ custom functions
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/files/omz-plugins/functions.zsh"
+    dest: "{{ home_dir }}/.oh-my-zsh/custom/functions.zsh"
+    state: link
+    force: true
+
 - name: Symlink gstale plugin
   ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/omz-plugins/plugins/gstale/gstale.plugin.zsh"
