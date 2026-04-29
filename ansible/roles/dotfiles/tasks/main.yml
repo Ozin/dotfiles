@@ -1,5 +1,5 @@
 ---
-# Replaces GNU Stow — places all config files via copy/link
+# Replaces GNU Stow — places all config files via symlink
 
 - name: Ensure target directories exist
   ansible.builtin.file:
@@ -17,53 +17,60 @@
 
 # --- zsh ---
 
-- name: Copy .zshrc
-  ansible.builtin.copy:
+- name: Symlink .zshrc
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/zshrc"
     dest: "{{ home_dir }}/.zshrc"
-    mode: "0644"
+    state: link
+    force: true
 
 # --- git ---
 
-- name: Copy .gitconfig
-  ansible.builtin.copy:
+- name: Symlink .gitconfig
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/gitconfig"
     dest: "{{ home_dir }}/.gitconfig"
-    mode: "0644"
+    state: link
+    force: true
 
-- name: Copy global .gitignore
-  ansible.builtin.copy:
+- name: Symlink global .gitignore
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/gitignore_global"
     dest: "{{ home_dir }}/.gitignore"
-    mode: "0644"
+    state: link
+    force: true
 
-- name: Copy git commit-msg hook
-  ansible.builtin.copy:
+- name: Symlink git commit-msg hook
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/git-hooks/commit-msg"
     dest: "{{ home_dir }}/.git-hooks/commit-msg"
-    mode: "0755"
+    state: link
+    force: true
 
 # --- omz plugins ---
 
-- name: Copy OMZ custom aliases
-  ansible.builtin.copy:
+- name: Symlink OMZ custom aliases
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/omz-plugins/aliases.zsh"
     dest: "{{ home_dir }}/.oh-my-zsh/custom/aliases.zsh"
-    mode: "0644"
+    state: link
+    force: true
 
-- name: Copy gstale plugin
-  ansible.builtin.copy:
+- name: Symlink gstale plugin
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/omz-plugins/plugins/gstale/gstale.plugin.zsh"
     dest: "{{ home_dir }}/.oh-my-zsh/custom/plugins/gstale/gstale.plugin.zsh"
-    mode: "0644"
+    state: link
+    force: true
 
 # --- bin scripts ---
 
-- name: Copy bin scripts
-  ansible.builtin.copy:
+- name: Symlink bin scripts
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/bin/{{ item }}"
     dest: "{{ home_dir }}/.local/bin/{{ item }}"
-    mode: "0755"
+    state: link
+    force: true
   loop:
     - pbcopy
     - pbpaste
@@ -72,33 +79,37 @@
 
 # --- tmux ---
 
-- name: Copy tmux.conf
-  ansible.builtin.copy:
+- name: Symlink tmux.conf
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/tmux.conf"
     dest: "{{ home_dir }}/.config/tmux/tmux.conf"
-    mode: "0644"
+    state: link
+    force: true
 
 # --- k9s ---
 
-- name: Copy k9s config files
-  ansible.builtin.copy:
+- name: Symlink k9s config files
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/k9s/{{ item }}"
     dest: "{{ home_dir }}/.config/k9s/{{ item }}"
-    mode: "0644"
+    state: link
+    force: true
   loop:
     - config.yaml
     - aliases.yaml
 
-- name: Copy k9s nord skin
-  ansible.builtin.copy:
+- name: Symlink k9s nord skin
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/k9s/skins/nord.yaml"
     dest: "{{ home_dir }}/.config/k9s/skins/nord.yaml"
-    mode: "0644"
+    state: link
+    force: true
 
 # --- dprint ---
 
-- name: Copy dprint config
-  ansible.builtin.copy:
+- name: Symlink dprint config
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/dprint/dprint.jsonc"
     dest: "{{ home_dir }}/.config/dprint/dprint.jsonc"
-    mode: "0644"
+    state: link
+    force: true

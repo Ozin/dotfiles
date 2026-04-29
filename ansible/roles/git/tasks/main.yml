@@ -8,15 +8,17 @@
     - "{{ home_dir }}/projects/private"
     - "{{ home_dir }}/projects/work"
 
-- name: Place private git context
-  ansible.builtin.copy:
+- name: Symlink private git context
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/git-contexts/private.gitconfig"
     dest: "{{ home_dir }}/projects/private/.gitconfig"
-    mode: "0644"
+    state: link
+    force: true
 
-- name: Place work git context
-  ansible.builtin.copy:
+- name: Symlink work git context
+  ansible.builtin.file:
     src: "{{ dotfiles_dir }}/files/git-contexts/work.gitconfig"
     dest: "{{ home_dir }}/projects/work/.gitconfig"
-    mode: "0644"
+    state: link
+    force: true
   when: corporate | bool

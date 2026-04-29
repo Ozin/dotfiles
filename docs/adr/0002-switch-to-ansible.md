@@ -33,5 +33,6 @@ Replace Stow + shell scripts with Ansible roles:
 - **Pro:** Built-in modules for common tasks (apt, file, git, uri, unarchive)
 - **Con:** Adds Python/Ansible as a runtime dependency (~60MB apt install)
 - **Con:** Slightly higher learning curve for YAML playbook syntax
-- **Con:** Config files are now copied (not symlinked) — edits in `$HOME` won't
-  reflect back to the repo. Must edit in `files/` and re-run.
+- **Con:** ~~Config files are now copied (not symlinked) — edits in `$HOME` won't
+  reflect back to the repo. Must edit in `files/` and re-run.~~
+  Resolved in ADR 0003: config files are now symlinked.

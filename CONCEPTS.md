@@ -15,7 +15,7 @@ This document captures the design philosophy and key decisions for this dotfiles
 - Roles: `apt`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
 - Each role tagged for selective execution (`--tags "shell,git"`)
 - Variables (tool versions, feature flags) in `ansible/group_vars/all.yml`
-- Config files stored in `files/` and placed via Ansible `copy` module
+- Config files stored in `files/` and symlinked via Ansible `file` module
 
 ## Package Management (APT)
 
@@ -71,5 +71,5 @@ When `CORPORATE=true`:
 1. **Idempotent** — every role safe to re-run without side effects
 2. **Tagged** — selective execution via `--tags`
 3. **Declarative** — Ansible modules handle state convergence
-4. **No templating** — config files copied as-is (no variables to inject)
+4. **No templating** — config files symlinked as-is (no variables to inject)
 5. **Minimal bootstrap** — `setup.sh` only ensures git + ansible, then delegates
