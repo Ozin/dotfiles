@@ -1,11 +1,5 @@
-[includeIf "gitdir:~/projects/work/"]
-	path = ~/projects/work/.gitconfig
-
-[includeIf "gitdir:~/projects/private/"]
-	path = ~/projects/private/.gitconfig
-
-[includeIf "gitdir:/mnt/c/Users/A2004D0/Documents/projects/work/"]
-	path = /mnt/c/Users/A2004D0/Documents/projects/work/.gitconfig
+[include]
+	path = ~/.gitconfig-contexts
 
 [user]
 	useConfigOnly = true

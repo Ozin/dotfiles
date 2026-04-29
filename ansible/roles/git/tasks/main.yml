@@ -1,12 +1,9 @@
 ---
-- name: Create projects directories
+- name: Ensure projects/private directory exists
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ home_dir }}/projects/private"
     state: directory
     mode: "0755"
-  loop:
-    - "{{ home_dir }}/projects/private"
-    - "{{ home_dir }}/projects/work"
 
 - name: Symlink private git context
   ansible.builtin.file:
@@ -15,10 +12,21 @@
     state: link
     force: true
 
-- name: Symlink work git context
-  ansible.builtin.file:
-    src: "{{ dotfiles_dir }}/files/git-contexts/work.gitconfig"
-    dest: "{{ home_dir }}/projects/work/.gitconfig"
-    state: link
-    force: true
-  when: corporate | bool
+- name: Discover git context directories
+  ansible.builtin.find:
+    paths: "{{ home_dir }}/projects"
+    patterns: ".gitconfig"
+    file_type: any
+    depth: 2
+  register: git_context_files
+
+- name: Generate ~/.gitconfig-contexts from discovered contexts
+  ansible.builtin.copy:
+    content: |
+      {% for f in git_context_files.files %}
+      [includeIf "gitdir:{{ f.path | dirname }}/"]
+      	path = {{ f.path }}
+
+      {% endfor %}
+    dest: "{{ home_dir }}/.gitconfig-contexts"
+    mode: "0644"
