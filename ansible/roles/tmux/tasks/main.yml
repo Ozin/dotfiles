@@ -11,3 +11,29 @@
     dest: "{{ home_dir }}/.config/tmux/plugins/tpm"
     depth: 1
     update: false
+
+# Clone the plugins referenced by `@plugin` lines in files/tmux.conf directly,
+# rather than relying on TPM's interactive `prefix + I`. Each is cloned into the
+# directory name TPM derives from the repo basename, so `run tpm` sources them.
+# Keep this list and the version pins in sync with files/tmux.conf.
+- name: Install tmux plugins
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ home_dir }}/.config/tmux/plugins/{{ item.dest }}"
+    version: "{{ item.version | default('HEAD') }}"
+    depth: 1
+    update: false
+  loop:
+    - {
+        repo: "https://github.com/tmux-plugins/tmux-sensible.git",
+        dest: "tmux-sensible",
+      }
+    - {
+        repo: "https://github.com/catppuccin/tmux.git",
+        dest: "tmux",
+        version: "v2.3.0",
+      }
+    - {
+        repo: "https://github.com/noscript/tmux-mighty-scroll.git",
+        dest: "tmux-mighty-scroll",
+      }

@@ -106,10 +106,10 @@
     - config.yaml
     - aliases.yaml
 
-- name: Symlink k9s nord skin
+- name: Symlink k9s Catppuccin Mocha skin
   ansible.builtin.file:
-    src: "{{ dotfiles_dir }}/files/k9s/skins/nord.yaml"
-    dest: "{{ home_dir }}/.config/k9s/skins/nord.yaml"
+    src: "{{ dotfiles_dir }}/files/k9s/skins/catppuccin-mocha.yaml"
+    dest: "{{ home_dir }}/.config/k9s/skins/catppuccin-mocha.yaml"
     state: link
     force: true
 
