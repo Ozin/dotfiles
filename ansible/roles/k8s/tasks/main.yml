@@ -40,6 +40,12 @@
     enabled: true
   when: ansible_os_family == "RedHat"
 
+- name: Refresh dnf metadata for the new repo (RedHat)
+  become: true
+  ansible.builtin.dnf:
+    update_cache: true
+  when: ansible_os_family == "RedHat"
+
 - name: Install kubectl
   become: true
   ansible.builtin.package:
