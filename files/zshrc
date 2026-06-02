@@ -1,3 +1,11 @@
+# Autostart inside a shared tmux session (attach to "0", or create it).
+# Runs before the expensive init below, since exec replaces this shell with
+# tmux; the inner shell re-sources this file with $TMUX set and skips the guard.
+# Guards: interactive shell, not already inside tmux, and tmux installed.
+if [[ -o interactive ]] && [[ -z "$TMUX" ]] && command -v tmux >/dev/null 2>&1; then
+  exec tmux new -As0
+fi
+
 # OpenSpec shell completions
 fpath=("$HOME/.oh-my-zsh/custom/completions" $fpath)
 autoload -Uz compinit
