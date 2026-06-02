@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(command -v *)",
+      "Bash(ip route get *)",
+      "Bash(ip route show *)",
+      "Bash(ip addr show *)",
+      "Bash(ip link show *)",
+      "Bash(ping *)",
+      "Bash(resolvectl status *)",
+      "Bash(ghostty +show-config *)",
+      "Bash(ghostty +list-themes *)",
+      "Bash(ghostty +validate-config *)"
+    ]
+  }
+}
