@@ -82,18 +82,26 @@
 
 # --- OpenTofu ---
 
-- name: Install OpenTofu via snap
-  become: true
-  community.general.snap:
-    name: opentofu
-    classic: true
+- name: Get latest OpenTofu version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/opentofu/opentofu/releases/latest
+    return_content: true
+  register: opentofu_release
+  when: opentofu_version == "latest"
 
-- name: Symlink OpenTofu to local bin
-  ansible.builtin.file:
-    src: /snap/opentofu/current/tofu
-    dest: "{{ local_bin }}/tofu"
-    state: link
-    force: true
+- name: Set OpenTofu download version
+  ansible.builtin.set_fact:
+    opentofu_dl_version: "{{ (opentofu_release.json.tag_name | regex_replace('^v', '')) if opentofu_version == 'latest' else opentofu_version }}"
+
+- name: Download and extract OpenTofu
+  ansible.builtin.unarchive:
+    src: "https://github.com/opentofu/opentofu/releases/download/v{{ opentofu_dl_version }}/tofu_{{ opentofu_dl_version }}_linux_amd64.zip"
+    dest: "{{ local_bin }}"
+    remote_src: true
+    include:
+      - tofu
+    mode: "0755"
+    creates: "{{ local_bin }}/tofu"
 
 # --- tree-sitter ---
 
