@@ -23,24 +23,24 @@ common_packages:
   - zip
   - zsh
 
-# Packages whose name (or presence) differs by OS family.
-# Debian: gnupg, python venv shipped separately.
-# RedHat: gnupg2, venv bundled in python3, fuse-libs for the Neovim AppImage.
+# Packages whose name (or presence) differs by package-manager family.
+# debian: gnupg, python venv shipped separately.
+# redhat: gnupg2, venv bundled in python3, fuse-libs for the Neovim AppImage.
 package_overrides:
-  Debian:
+  debian:
     - gnupg
     - python3.12-venv
-  RedHat:
+  redhat:
     - gnupg2
     - python3
     - fuse-libs
 
-# WSL-only packages, by OS family (X11 utils only matter under WSL).
+# WSL-only packages, by package-manager family (X11 utils only matter under WSL).
 wsl_packages_by_os:
-  Debian:
+  debian:
     - wslu
     - x11-apps
-  RedHat: []
+  redhat: []
 
-system_packages: "{{ common_packages + package_overrides[ansible_os_family] }}"
-wsl_packages: "{{ wsl_packages_by_os[ansible_os_family] }}"
+system_packages: "{{ common_packages + package_overrides[pkg_family] }}"
+wsl_packages: "{{ wsl_packages_by_os[pkg_family] }}"

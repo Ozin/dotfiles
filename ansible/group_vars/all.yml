@@ -1,6 +1,11 @@
 # Feature flags
 corporate: false
 
+# Package-manager family, normalized to "debian"/"redhat".
+# Derived from the detected package manager rather than ansible_os_family,
+# which is unreliable on Fedora derivatives (e.g. Nobara reports "Nobara").
+pkg_family: "{{ 'debian' if ansible_pkg_mgr in ['apt', 'apt-get'] else ('redhat' if ansible_pkg_mgr in ['dnf', 'dnf5', 'yum'] else ansible_pkg_mgr) }}"
+
 # User directories
 home_dir: "{{ ansible_env.HOME }}"
 local_bin: "{{ home_dir }}/.local/bin"

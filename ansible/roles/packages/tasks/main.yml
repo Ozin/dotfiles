@@ -1,8 +1,8 @@
 ---
-- name: Assert supported OS family
+- name: Assert supported package-manager family
   ansible.builtin.assert:
-    that: ansible_os_family in package_overrides
-    fail_msg: "Unsupported OS family '{{ ansible_os_family }}'. Supported: {{ package_overrides.keys() | list }}."
+    that: pkg_family in package_overrides
+    fail_msg: "Unsupported package manager '{{ ansible_pkg_mgr }}' (family '{{ pkg_family }}'). Supported families: {{ package_overrides.keys() | list }}."
 
 - name: Detect WSL environment
   ansible.builtin.set_fact:
@@ -13,7 +13,7 @@
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
-  when: ansible_os_family == "Debian"
+  when: pkg_family == "debian"
 
 - name: Install system packages
   become: true
