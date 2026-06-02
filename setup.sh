@@ -49,4 +49,6 @@ ansible-playbook ansible/site.yml \
   --ask-become-pass
 
 printf "\n\033[1;32m✅ Dotfiles setup complete!\033[0m\n"
-echo "  Restart your terminal or run: exec zsh"
+echo "  Default shell changed to zsh. Opening a new terminal window is NOT enough —"
+echo "  your desktop session still holds the old \$SHELL. Log out and back in (or reboot)."
+echo "  To switch the current shell immediately: exec zsh"

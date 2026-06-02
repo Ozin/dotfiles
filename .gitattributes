@@ -1,2 +1,12 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Normalize all text files to LF on commit and in the working tree.
+# eol=lf overrides any machine's core.autocrlf (e.g. WSL/Windows leftovers).
+* text=auto eol=lf
+
+# Explicitly binary: never touch line endings.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.gz binary
+*.zip binary

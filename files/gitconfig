@@ -9,7 +9,7 @@
 
 [core]
 	pager = diff-so-fancy | less --tabs=4 -+$LESS -RF
-	autocrlf = true
+	autocrlf = false
 	fileMode = false
 	hooksPath = ~/.git-hooks
 	excludesFile = ~/.gitignore
