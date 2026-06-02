@@ -12,3 +12,40 @@
   args:
     executable: /bin/bash
     creates: "{{ home_dir }}/.sdkman/candidates/gradle/current/bin/gradle"
+
+- name: Assert default Java is in the installed set
+  ansible.builtin.assert:
+    that: sdkman_java_default in sdkman_java_versions
+    fail_msg: "sdkman_java_default '{{ sdkman_java_default }}' must be listed in sdkman_java_versions"
+
+- name: Install Java versions via SDKMAN
+  ansible.builtin.shell: |
+    source {{ home_dir }}/.sdkman/bin/sdkman-init.sh && sdk install java {{ item }}
+  args:
+    executable: /bin/bash
+    creates: "{{ home_dir }}/.sdkman/candidates/java/{{ item }}"
+  loop: "{{ sdkman_java_versions }}"
+
+- name: Determine current default Java
+  ansible.builtin.shell: |
+    if [ -L "{{ home_dir }}/.sdkman/candidates/java/current" ]; then
+      basename "$(readlink -f "{{ home_dir }}/.sdkman/candidates/java/current")"
+    fi
+  args:
+    executable: /bin/bash
+  register: sdkman_current_java
+  changed_when: false
+
+- name: Set default Java via SDKMAN
+  ansible.builtin.shell: |
+    source {{ home_dir }}/.sdkman/bin/sdkman-init.sh && sdk default java {{ sdkman_java_default }}
+  args:
+    executable: /bin/bash
+  when: (sdkman_current_java.stdout | trim) != sdkman_java_default
+
+- name: Install Maven via SDKMAN
+  ansible.builtin.shell: |
+    source {{ home_dir }}/.sdkman/bin/sdkman-init.sh && sdk install maven
+  args:
+    executable: /bin/bash
+    creates: "{{ home_dir }}/.sdkman/candidates/maven/current/bin/mvn"

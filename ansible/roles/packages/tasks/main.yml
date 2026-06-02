@@ -1,0 +1,29 @@
+---
+- name: Assert supported OS family
+  ansible.builtin.assert:
+    that: ansible_os_family in package_overrides
+    fail_msg: "Unsupported OS family '{{ ansible_os_family }}'. Supported: {{ package_overrides.keys() | list }}."
+
+- name: Detect WSL environment
+  ansible.builtin.set_fact:
+    is_wsl: "{{ 'microsoft' in (ansible_kernel | lower) }}"
+
+- name: Update apt cache (Debian)
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: Install system packages
+  become: true
+  ansible.builtin.package:
+    name: "{{ system_packages }}"
+    state: present
+
+- name: Install WSL-specific packages
+  become: true
+  ansible.builtin.package:
+    name: "{{ wsl_packages }}"
+    state: present
+  when: is_wsl and (wsl_packages | length > 0)

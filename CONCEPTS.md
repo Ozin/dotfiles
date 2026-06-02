@@ -5,24 +5,32 @@ This document captures the design philosophy and key decisions for this dotfiles
 ## Bootstrap Strategy
 
 - Single entry point: `setup.sh` curl-able from GitHub (`curl | bash` pattern)
-- WSL2 / Ubuntu only (no macOS support)
+- Linux only (no macOS support): Debian/Ubuntu (incl. WSL2) via apt, and Fedora/RHEL via dnf
 - Supports environment flags: `CORPORATE=true` for corporate-specific settings
-- `setup.sh` is minimal: clone repo → install Ansible → run playbook
+- `setup.sh` is minimal: clone repo → detect apt-get/dnf → install Ansible → run playbook
 
 ## Automation
 
 - **Ansible** with local connection (`hosts: localhost`), roles-based structure
-- Roles: `apt`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
+- Roles: `packages`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
 - Each role tagged for selective execution (`--tags "shell,git"`)
 - Variables (tool versions, feature flags) in `ansible/group_vars/all.yml`
 - Config files stored in `files/` and symlinked via Ansible `file` module
 
-## Package Management (APT)
+## Package Management (apt / dnf)
 
-Core CLI tools installed via apt role:
-bat, coreutils, curl, diffutils, findutils, gcc, gnupg, golang, grep, gzip,
-highlight, jq, make, maven, mkcert, openjdk-21-jdk, openjdk-25-jdk, podman,
-python3.12-venv, ripgrep, tmux, tree, unzip, wslu, x11-apps, xclip, zip, zsh
+The `packages` role installs system packages via the generic `ansible.builtin.package`
+module, which dispatches to apt (Debian) or dnf (RedHat). Package names live in a
+single `roles/packages/vars/main.yml`: a shared `common_packages` list plus a
+small `package_overrides` map for names that differ per OS family (e.g.
+`gnupg`/`gnupg2`, `python3.12-venv` vs venv bundled in `python3`, `fuse-libs` on
+Fedora for the Neovim AppImage). WSL-only packages (`wslu`, `x11-apps`) install
+only when running under WSL.
+
+Core CLI tools: bat, coreutils, curl, diffutils, findutils, gcc, gnupg, golang,
+grep, gzip, highlight, jq, make, mkcert, podman, ripgrep, tmux, tree, unzip,
+xclip, zip, zsh. The JVM toolchain (Java, Maven) is managed via SDKMAN, not
+system packages.
 
 ## Shell — Zsh
 
@@ -47,17 +55,17 @@ python3.12-venv, ripgrep, tmux, tree, unzip, wslu, x11-apps, xclip, zip, zsh
 |------|--------|
 | Oh My Zsh | installer script |
 | Starship | installer script |
-| SDKMAN + Gradle | installer script |
+| SDKMAN + Gradle, Java (GraalVM), Maven | installer script + `sdk install` |
 | NVM + Node.js LTS | installer script |
 | Neovim | AppImage → /opt/nvim/, symlink ~/.local/bin/nvim |
 | kickstart.nvim | git clone → ~/.config/nvim |
 | k9s | GitHub release tar → ~/.local/bin/k9s |
 | Syft | GitHub release tar → ~/.local/bin/syft |
 | Terraform | HashiCorp zip → ~/.local/bin/terraform |
-| OpenTofu | snap → symlink ~/.local/bin/tofu |
+| OpenTofu | GitHub release zip → ~/.local/bin/tofu |
 | tree-sitter | GitHub release gz → /opt/tree-sitter/, symlink ~/.local/bin/tree-sitter |
 | dprint | installer script → ~/.dprint/bin/dprint |
-| kubectl | Kubernetes apt repo |
+| kubectl | Kubernetes apt repo (Debian) / yum repo (RedHat) |
 | Helm | installer script |
 | TPM | git clone → ~/.config/tmux/plugins/tpm |
 

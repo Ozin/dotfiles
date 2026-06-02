@@ -15,4 +15,10 @@ neovim_version: "latest"
 k9s_version: "latest"
 syft_version: "latest"
 terraform_version: "latest"
+opentofu_version: "latest"
 tree_sitter_version: "latest"
+
+# SDKMAN-managed JVM toolchain (GraalVM / latest Java)
+sdkman_java_versions:
+  - "25-graal"
+sdkman_java_default: "25-graal"

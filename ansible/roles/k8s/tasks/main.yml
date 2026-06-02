@@ -1,24 +1,56 @@
 ---
-- name: Add Kubernetes apt signing key
+- name: Ensure apt keyrings directory exists (Debian)
+  become: true
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+  when: ansible_os_family == "Debian"
+
+- name: Add Kubernetes apt signing key (Debian)
   become: true
   ansible.builtin.shell: |
     curl -fsSL https://pkgs.k8s.io/core:/stable:/{{ kubectl_repo_version }}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   args:
     creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  when: ansible_os_family == "Debian"
 
-- name: Add Kubernetes apt repository
+- name: Add Kubernetes apt repository (Debian)
   become: true
   ansible.builtin.copy:
     content: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ kubectl_repo_version }}/deb/ /\n"
     dest: /etc/apt/sources.list.d/kubernetes.list
     mode: "0644"
+  when: ansible_os_family == "Debian"
+
+- name: Update apt cache (Debian)
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Add Kubernetes yum repository (RedHat)
+  become: true
+  ansible.builtin.yum_repository:
+    name: kubernetes
+    description: Kubernetes
+    baseurl: "https://pkgs.k8s.io/core:/stable:/{{ kubectl_repo_version }}/rpm/"
+    gpgcheck: true
+    gpgkey: "https://pkgs.k8s.io/core:/stable:/{{ kubectl_repo_version }}/rpm/repodata/repomd.xml.key"
+    enabled: true
+  when: ansible_os_family == "RedHat"
+
+- name: Refresh dnf metadata for the new repo (RedHat)
+  become: true
+  ansible.builtin.dnf:
+    update_cache: true
+  when: ansible_os_family == "RedHat"
 
 - name: Install kubectl
   become: true
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: kubectl
     state: present
-    update_cache: true
 
 - name: Install Helm
   ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
