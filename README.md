@@ -1,6 +1,6 @@
 # Dotfiles
 
-Personal dev environment for WSL2 / Ubuntu. Managed with [Ansible](https://docs.ansible.com/).
+Personal dev environment for Linux — Debian/Ubuntu (incl. WSL2) and Fedora/RHEL. Managed with [Ansible](https://docs.ansible.com/).
 
 ## Quick Start
 
@@ -27,7 +27,7 @@ cd ~/projects/private/dotfiles
 ansible-playbook ansible/site.yml -i ansible/inventory/localhost.yml --tags "shell,git"
 ```
 
-Available tags: `apt`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
+Available tags: `packages`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
 
 ## Structure
 
@@ -38,7 +38,7 @@ dotfiles/
 │   ├── site.yml          # Main playbook
 │   ├── inventory/
 │   ├── group_vars/all.yml
-│   └── roles/            # apt, shell, git, sdkman, nvm, tools, k8s, tmux, dotfiles
+│   └── roles/            # packages, shell, git, sdkman, nvm, tools, k8s, tmux, dotfiles
 ├── files/                # Config file sources (copied to $HOME by dotfiles role)
 │   ├── zshrc
 │   ├── gitconfig
@@ -62,10 +62,10 @@ dotfiles/
 
 | Role | Installs / Configures |
 |------|----------------------|
-| `apt` | Core CLI tools, podman, Java, Go, zsh |
+| `packages` | Core CLI tools, podman, Go, zsh (apt or dnf) |
 | `shell` | Oh My Zsh, Starship prompt, sets zsh as default shell |
 | `git` | Git contexts (private + work when CORPORATE=true) |
-| `sdkman` | SDKMAN + Gradle |
+| `sdkman` | SDKMAN + Gradle, Java (GraalVM), Maven |
 | `nvm` | NVM + Node.js LTS |
 | `tools` | Neovim, Syft, Terraform, OpenTofu, tree-sitter, dprint |
 | `k8s` | kubectl, Helm, k9s |
