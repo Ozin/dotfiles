@@ -6,6 +6,7 @@ common_packages:
   - curl
   - diffutils
   - findutils
+  - fontconfig
   - gcc
   - golang
   - grep

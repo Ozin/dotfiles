@@ -1,0 +1,75 @@
+---
+# Ghostty terminal emulator + Monaspace Nerd Font.
+#
+# redhat: not in official Fedora repos (as of 2026) — installed from the
+#         scottames/ghostty COPR.
+# debian: no official apt package — installed from the community
+#         mkasberg/ghostty-ubuntu .deb matching this release.
+
+# --- Ghostty: redhat (COPR) ---
+
+- name: Enable Ghostty COPR repository (redhat)
+  become: true
+  ansible.builtin.command:
+    cmd: dnf -y copr enable scottames/ghostty
+    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:scottames:ghostty.repo
+  when: pkg_family == "redhat"
+
+- name: Install Ghostty (redhat)
+  become: true
+  ansible.builtin.package:
+    name: ghostty
+    state: present
+  when: pkg_family == "redhat"
+
+# --- Ghostty: debian (community .deb) ---
+
+- name: Get latest ghostty-ubuntu release (debian)
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/mkasberg/ghostty-ubuntu/releases/latest
+    return_content: true
+  register: ghostty_deb_release
+  when: pkg_family == "debian"
+
+- name: Resolve ghostty .deb URL for this release (debian)
+  ansible.builtin.set_fact:
+    ghostty_deb_url: >-
+      {{ (ghostty_deb_release.json.assets
+          | map(attribute='browser_download_url')
+          | select('search', '_amd64_(' ~ ansible_distribution_version ~ '|' ~ ansible_distribution_release ~ ')\.deb$')
+          | list | first) | default('') }}
+  when: pkg_family == "debian"
+
+- name: Fail when no matching ghostty .deb is published (debian)
+  ansible.builtin.fail:
+    msg: >-
+      No ghostty-ubuntu .deb found for {{ ansible_distribution }}
+      {{ ansible_distribution_version }} ({{ ansible_distribution_release }}).
+      See https://github.com/mkasberg/ghostty-ubuntu/releases
+  when: pkg_family == "debian" and ghostty_deb_url | length == 0
+
+- name: Install Ghostty (debian, community .deb)
+  become: true
+  ansible.builtin.apt:
+    deb: "{{ ghostty_deb_url }}"
+    state: present
+  when: pkg_family == "debian"
+
+# --- Monaspace Nerd Font ---
+
+- name: Ensure user fonts directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.local/share/fonts/Monaspace"
+    state: directory
+    mode: "0755"
+
+- name: Install Monaspace Nerd Font
+  ansible.builtin.unarchive:
+    src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Monaspace.zip
+    dest: "{{ home_dir }}/.local/share/fonts/Monaspace"
+    remote_src: true
+    creates: "{{ home_dir }}/.local/share/fonts/Monaspace/MonaspiceNeNerdFont-Regular.otf"
+
+- name: Refresh font cache
+  ansible.builtin.command: fc-cache -f "{{ home_dir }}/.local/share/fonts"
+  changed_when: false

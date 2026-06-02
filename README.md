@@ -27,7 +27,7 @@ cd ~/projects/private/dotfiles
 ansible-playbook ansible/site.yml -i ansible/inventory/localhost.yml --tags "shell,git"
 ```
 
-Available tags: `packages`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `dotfiles`
+Available tags: `packages`, `shell`, `git`, `sdkman`, `nvm`, `tools`, `k8s`, `tmux`, `ghostty`, `dotfiles`
 
 ## Structure
 
@@ -38,13 +38,14 @@ dotfiles/
 │   ├── site.yml          # Main playbook
 │   ├── inventory/
 │   ├── group_vars/all.yml
-│   └── roles/            # packages, shell, git, sdkman, nvm, tools, k8s, tmux, dotfiles
-├── files/                # Config file sources (copied to $HOME by dotfiles role)
+│   └── roles/            # packages, shell, git, sdkman, nvm, tools, k8s, tmux, ghostty, dotfiles
+├── files/                # Config file sources (symlinked into $HOME by dotfiles role)
 │   ├── zshrc
 │   ├── gitconfig
 │   ├── gitignore_global
 │   ├── git-hooks/
 │   ├── tmux.conf
+│   ├── ghostty/
 │   ├── k9s/
 │   ├── dprint/
 │   ├── omz-plugins/
@@ -70,7 +71,8 @@ dotfiles/
 | `tools` | Neovim, Syft, Terraform, OpenTofu, tree-sitter, dprint |
 | `k8s` | kubectl, Helm, k9s |
 | `tmux` | TPM (Tmux Plugin Manager) |
-| `dotfiles` | All config files → `$HOME` (replaces Stow) |
+| `ghostty` | Ghostty terminal (dnf/COPR on Fedora, community `.deb` on Debian/Ubuntu) + Monaspace Nerd Font |
+| `dotfiles` | Symlinks all config files into `$HOME` (replaces Stow) |
 
 ### Config Files (`files/`)
 
@@ -81,9 +83,11 @@ dotfiles/
 | `gitignore_global` | `~/.gitignore` |
 | `git-hooks/commit-msg` | `~/.git-hooks/commit-msg` |
 | `tmux.conf` | `~/.config/tmux/tmux.conf` |
+| `ghostty/config` | `~/.config/ghostty/config` |
 | `k9s/` | `~/.config/k9s/` |
 | `dprint/dprint.jsonc` | `~/.config/dprint/dprint.jsonc` |
 | `omz-plugins/aliases.zsh` | `~/.oh-my-zsh/custom/aliases.zsh` |
+| `omz-plugins/functions.zsh` | `~/.oh-my-zsh/custom/functions.zsh` |
 | `omz-plugins/plugins/gstale/` | `~/.oh-my-zsh/custom/plugins/gstale/` |
 | `bin/` | `~/.local/bin/` (pbcopy, pbpaste, wslopen, xdg-open) |
 

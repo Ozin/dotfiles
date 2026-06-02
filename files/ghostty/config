@@ -1,0 +1,28 @@
+# Ghostty — managed by dotfiles (https://ghostty.org/docs/config)
+
+# Theme: Catppuccin Mocha (built-in)
+theme = catppuccin-mocha
+
+# Font (Monaspace Nerd Font — installed by the ghostty role)
+font-family = "MonaspiceNe Nerd Font"
+font-size = 12
+font-feature = calt
+font-feature = liga
+font-feature = ss01
+
+# Window
+window-padding-x = 8
+window-padding-y = 8
+window-decoration = true
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# Behavior
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+confirm-close-surface = false
+
+# Scrollback (lines)
+scrollback-limit = 100000

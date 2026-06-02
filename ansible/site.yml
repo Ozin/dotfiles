@@ -29,5 +29,8 @@
     - role: tmux
       tags: [tmux]
 
+    - role: ghostty
+      tags: [ghostty]
+
     - role: dotfiles
       tags: [dotfiles]
