@@ -16,8 +16,8 @@ info() { printf "\n\033[1;34m→ %s\033[0m\n" "$*"; }
 err()  { printf "\033[1;31m❌ %s\033[0m\n" "$*" >&2; exit 1; }
 
 # OS check
-if ! grep -qi microsoft /proc/version 2>/dev/null && [[ "$(uname -s)" != "Linux" ]]; then
-  err "Unsupported OS. Only WSL2/Ubuntu is supported."
+if [[ "$(uname -s)" != "Linux" ]]; then
+  err "Unsupported OS. Only Linux (incl. WSL2) is supported."
 fi
 
 # Clone if needed
@@ -31,8 +31,14 @@ cd "$CLONE_DIR"
 # Install Ansible
 if ! command -v ansible-playbook &>/dev/null; then
   info "Installing Ansible..."
-  sudo apt-get update -qq
-  sudo apt-get install -y -qq ansible
+  if command -v apt-get &>/dev/null; then
+    sudo apt-get update -qq
+    sudo apt-get install -y -qq ansible
+  elif command -v dnf &>/dev/null; then
+    sudo dnf install -y -q ansible
+  else
+    err "No supported package manager found (need apt-get or dnf)."
+  fi
 fi
 
 # Run playbook
