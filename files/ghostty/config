@@ -1,7 +1,7 @@
 # Ghostty — managed by dotfiles (https://ghostty.org/docs/config)
 
 # Theme: Catppuccin Mocha (built-in)
-theme = catppuccin-mocha
+theme = Catppuccin Mocha
 
 # Font (Monaspace Nerd Font — installed by the ghostty role)
 font-family = "MonaspiceNe Nerd Font"
