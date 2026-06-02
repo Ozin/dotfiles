@@ -37,23 +37,27 @@ that native Linux (incl. Fedora) is supported.
 Rename `ansible/roles/apt` → `ansible/roles/packages`; update the role name and
 tag in `ansible/site.yml` (`apt` → `packages`).
 
-Layout:
+Layout — a single auto-loaded vars file (no per-OS duplication; the shared list
+lives once, only genuine differences are split):
 
 ```
 ansible/roles/packages/
   tasks/main.yml
-  vars/Debian.yml
-  vars/RedHat.yml
+  vars/main.yml   # common_packages + package_overrides[os] + wsl_packages_by_os[os]
 ```
+
+`vars/main.yml` defines `common_packages` (identical names on every distro),
+`package_overrides` (per-OS-family diffs), `wsl_packages_by_os`, and derives
+`system_packages: "{{ common_packages + package_overrides[ansible_os_family] }}"`
+and `wsl_packages: "{{ wsl_packages_by_os[ansible_os_family] }}"`.
 
 `tasks/main.yml`:
 
-1. `include_vars: "{{ ansible_os_family }}.yml"` → loads `Debian.yml` or `RedHat.yml`.
-2. WSL detection: `set_fact: is_wsl: "{{ 'microsoft' in (ansible_kernel | lower) }}"`.
-3. apt cache update — `ansible.builtin.apt: update_cache: true`, gated
+1. WSL detection: `set_fact: is_wsl: "{{ 'microsoft' in (ansible_kernel | lower) }}"`.
+2. apt cache update — `ansible.builtin.apt: update_cache: true`, gated
    `when: ansible_os_family == "Debian"`.
-4. Install `system_packages` via `ansible.builtin.package` (dispatches to apt/dnf).
-5. Install `wsl_packages` via `ansible.builtin.package`, gated `when: is_wsl`.
+3. Install `system_packages` via `ansible.builtin.package` (dispatches to apt/dnf).
+4. Install `wsl_packages` via `ansible.builtin.package`, gated `when: is_wsl`.
 
 Package set changes vs. today's flat list:
 

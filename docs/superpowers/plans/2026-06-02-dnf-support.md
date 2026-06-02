@@ -86,8 +86,7 @@ git commit -m "feat(setup): detect apt-get or dnf for Ansible install"
 **Files:**
 - Rename: `ansible/roles/apt/` → `ansible/roles/packages/`
 - Rewrite: `ansible/roles/packages/tasks/main.yml`
-- Create: `ansible/roles/packages/vars/Debian.yml`
-- Create: `ansible/roles/packages/vars/RedHat.yml`
+- Create: `ansible/roles/packages/vars/main.yml` (single source of truth — shared list + per-OS override map)
 - Modify: `ansible/site.yml:8-9` (role name + tag)
 
 - [ ] **Step 1: Rename the role directory (preserve history)**
@@ -112,13 +111,10 @@ with:
 
 - [ ] **Step 3: Rewrite `ansible/roles/packages/tasks/main.yml`**
 
-Full new contents:
+`vars/main.yml` is auto-loaded by the role, so no `include_vars` is needed. Full new contents:
 
 ```yaml
 ---
-- name: Load OS-specific package variables
-  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
-
 - name: Detect WSL environment
   ansible.builtin.set_fact:
     is_wsl: "{{ 'microsoft' in (ansible_kernel | lower) }}"
@@ -144,20 +140,20 @@ Full new contents:
   when: is_wsl and (wsl_packages | length > 0)
 ```
 
-- [ ] **Step 4: Create `ansible/roles/packages/vars/Debian.yml`**
+- [ ] **Step 4: Create `ansible/roles/packages/vars/main.yml` (single source of truth)**
 
-Full contents:
+`common_packages` holds every package with an identical name across distros; only genuine differences go in `package_overrides`. `system_packages`/`wsl_packages` are derived from `ansible_os_family`. Full contents:
 
 ```yaml
 ---
-system_packages:
+# Packages with the same name on every supported distro.
+common_packages:
   - bat
   - coreutils
   - curl
   - diffutils
   - findutils
   - gcc
-  - gnupg
   - golang
   - grep
   - gzip
@@ -166,7 +162,6 @@ system_packages:
   - make
   - mkcert
   - podman
-  - python3.12-venv
   - ripgrep
   - tmux
   - tree
@@ -175,52 +170,35 @@ system_packages:
   - zip
   - zsh
 
-wsl_packages:
-  - wslu
-  - x11-apps
+# Packages whose name (or presence) differs by OS family.
+# Debian: gnupg, python venv shipped separately.
+# RedHat: gnupg2, venv bundled in python3, fuse-libs for the Neovim AppImage.
+package_overrides:
+  Debian:
+    - gnupg
+    - python3.12-venv
+  RedHat:
+    - gnupg2
+    - python3
+    - fuse-libs
+
+# WSL-only packages, by OS family (X11 utils only matter under WSL).
+wsl_packages_by_os:
+  Debian:
+    - wslu
+    - x11-apps
+  RedHat: []
+
+system_packages: "{{ common_packages + package_overrides[ansible_os_family] }}"
+wsl_packages: "{{ wsl_packages_by_os[ansible_os_family] }}"
 ```
 
-- [ ] **Step 5: Create `ansible/roles/packages/vars/RedHat.yml`**
-
-Full contents (Fedora names; `gnupg`→`gnupg2`, `python3.12-venv`→`python3`, `fuse-libs` added for the Neovim AppImage, X11 utils only relevant under WSL so `wsl_packages` empty):
-
-```yaml
----
-system_packages:
-  - bat
-  - coreutils
-  - curl
-  - diffutils
-  - findutils
-  - fuse-libs
-  - gcc
-  - gnupg2
-  - golang
-  - grep
-  - gzip
-  - highlight
-  - jq
-  - make
-  - mkcert
-  - podman
-  - python3
-  - ripgrep
-  - tmux
-  - tree
-  - unzip
-  - xclip
-  - zip
-  - zsh
-
-wsl_packages: []
-```
-
-- [ ] **Step 6: Verify playbook syntax**
+- [ ] **Step 5: Verify playbook syntax**
 
 Run: `ansible-playbook ansible/site.yml -i ansible/inventory/localhost.yml --syntax-check`
 Expected: prints the playbook path with no errors, exit 0.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
 git add ansible/site.yml ansible/roles/packages
