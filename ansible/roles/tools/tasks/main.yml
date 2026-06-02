@@ -143,3 +143,24 @@
   ansible.builtin.shell: curl -fsSL https://dprint.dev/install.sh | sh
   args:
     creates: "{{ home_dir }}/.dprint/bin/dprint"
+
+# --- diff-so-fancy ---
+# Self-contained FatPacker perl script used as the git core pager
+# (see gitconfig: pager = diff-so-fancy | less ...). Not an OMZ plugin.
+
+- name: Get latest diff-so-fancy version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest
+    return_content: true
+  register: diff_so_fancy_release
+  when: diff_so_fancy_version == "latest"
+
+- name: Set diff-so-fancy download version
+  ansible.builtin.set_fact:
+    diff_so_fancy_dl_version: "{{ diff_so_fancy_release.json.tag_name if diff_so_fancy_version == 'latest' else diff_so_fancy_version }}"
+
+- name: Install diff-so-fancy
+  ansible.builtin.get_url:
+    url: "https://github.com/so-fancy/diff-so-fancy/releases/download/{{ diff_so_fancy_dl_version }}/diff-so-fancy"
+    dest: "{{ local_bin }}/diff-so-fancy"
+    mode: "0755"

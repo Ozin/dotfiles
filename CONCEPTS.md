@@ -36,7 +36,7 @@ system packages.
 
 - **Framework**: Oh My Zsh (installed via official script)
 - **Prompt**: Starship
-- **Plugins**: git, z, diff-so-fancy, kubectl, mvn, gradle, helm, python, gstale (custom)
+- **Plugins**: git, z, kubectl, mvn, gradle, helm, python, gstale (custom)
 - **Custom aliases**: vim/vi/v → nvim, dotenv helper, git push hyperlinks
 - **Path**: `~/.local/bin`, `~/.dprint/bin`
 
@@ -46,7 +46,7 @@ system packages.
 - `user.useConfigOnly = true` — forces explicit user config per repo context
 - `pull.rebase = true`, `rerere.enabled = true`, `column.ui = auto`
 - `init.defaultBranch = main`
-- **Diff**: diff-so-fancy as core pager
+- **Diff**: diff-so-fancy as core pager (installed as a binary by the `tools` role, not an OMZ plugin)
 - **Hooks**: `~/.git-hooks/commit-msg` (JIRA ticket prefix from branch name)
 
 ## Tools Installed from External Sources
@@ -65,6 +65,7 @@ system packages.
 | OpenTofu | GitHub release zip → ~/.local/bin/tofu |
 | tree-sitter | GitHub release gz → /opt/tree-sitter/, symlink ~/.local/bin/tree-sitter |
 | dprint | installer script → ~/.dprint/bin/dprint |
+| diff-so-fancy | GitHub release (FatPacker script) → ~/.local/bin/diff-so-fancy |
 | kubectl | Kubernetes apt repo (Debian) / yum repo (RedHat) |
 | Helm | installer script |
 | TPM | git clone → ~/.config/tmux/plugins/tpm |
