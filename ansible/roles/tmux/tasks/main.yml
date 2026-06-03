@@ -28,7 +28,3 @@
         repo: "https://github.com/tmux-plugins/tmux-sensible.git",
         dest: "tmux-sensible",
       }
-    - {
-        repo: "https://github.com/noscript/tmux-mighty-scroll.git",
-        dest: "tmux-mighty-scroll",
-      }
