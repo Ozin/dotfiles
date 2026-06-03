@@ -29,11 +29,6 @@
         dest: "tmux-sensible",
       }
     - {
-        repo: "https://github.com/catppuccin/tmux.git",
-        dest: "tmux",
-        version: "v2.3.0",
-      }
-    - {
         repo: "https://github.com/noscript/tmux-mighty-scroll.git",
         dest: "tmux-mighty-scroll",
       }

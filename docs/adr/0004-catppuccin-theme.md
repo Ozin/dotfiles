@@ -1,6 +1,6 @@
 # 0004 — Standardise on Catppuccin Mocha and install tmux plugins on apply
 
-**Status:** accepted
+**Status:** accepted (tmux theming reversed by [ADR 0005](0005-drop-tmux-catppuccin-theme.md))
 **Date:** 2026-06-02
 
 ## Context
