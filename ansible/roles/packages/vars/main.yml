@@ -27,14 +27,17 @@ common_packages:
 # Packages whose name (or presence) differs by package-manager family.
 # debian: gnupg, python venv shipped separately.
 # redhat: gnupg2, venv bundled in python3, fuse-libs for the Neovim AppImage.
+# shellcheck is capitalized in Fedora repos.
 package_overrides:
   debian:
     - gnupg
     - python3.12-venv
+    - shellcheck
   redhat:
     - gnupg2
     - python3
     - fuse-libs
+    - ShellCheck
 
 # WSL-only packages, by package-manager family (X11 utils only matter under WSL).
 wsl_packages_by_os:
