@@ -83,7 +83,6 @@
     - pbcopy
     - pbpaste
     - wslopen
-    - xdg-open
 
 # --- tmux ---
 

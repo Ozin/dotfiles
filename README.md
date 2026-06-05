@@ -90,7 +90,7 @@ dotfiles/
 | `omz-plugins/aliases.zsh`     | `~/.oh-my-zsh/custom/aliases.zsh`                    |
 | `omz-plugins/functions.zsh`   | `~/.oh-my-zsh/custom/functions.zsh`                  |
 | `omz-plugins/plugins/gstale/` | `~/.oh-my-zsh/custom/plugins/gstale/`                |
-| `bin/`                        | `~/.local/bin/` (pbcopy, pbpaste, wslopen, xdg-open) |
+| `bin/`                        | `~/.local/bin/` (pbcopy, pbpaste, wslopen)           |
 
 ## Environment Flags
 
