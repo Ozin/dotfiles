@@ -52,6 +52,7 @@ dotfiles/
 │   ├── bin/
 │   └── git-contexts/
 ├── docs/adr/
+├── docs/guides/          # standalone how-tos (e.g. zen-flatpak-keepassxc)
 ├── AGENTS.md
 ├── CONCEPTS.md
 └── README.md
@@ -61,38 +62,38 @@ dotfiles/
 
 ### Ansible Roles
 
-| Role | Installs / Configures |
-|------|----------------------|
-| `packages` | Core CLI tools, podman, Go, zsh (apt or dnf) |
-| `shell` | Oh My Zsh, Starship prompt, sets zsh as default shell |
-| `git` | Git contexts (private + work when CORPORATE=true) |
-| `sdkman` | SDKMAN + Gradle, Java (GraalVM), Maven |
-| `nvm` | NVM + Node.js LTS |
-| `tools` | Neovim, Syft, Terraform, OpenTofu, tree-sitter, dprint |
-| `k8s` | kubectl, Helm, k9s |
-| `tmux` | TPM (Tmux Plugin Manager) |
-| `ghostty` | Ghostty terminal (dnf/COPR on Fedora, community `.deb` on Debian/Ubuntu) + Monaspace Nerd Font |
-| `dotfiles` | Symlinks all config files into `$HOME` (replaces Stow) |
+| Role       | Installs / Configures                                                                          |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| `packages` | Core CLI tools, podman, Go, zsh (apt or dnf)                                                   |
+| `shell`    | Oh My Zsh, Starship prompt, sets zsh as default shell                                          |
+| `git`      | Git contexts (private + work when CORPORATE=true)                                              |
+| `sdkman`   | SDKMAN + Gradle, Java (GraalVM), Maven                                                         |
+| `nvm`      | NVM + Node.js LTS                                                                              |
+| `tools`    | Neovim, Syft, Terraform, OpenTofu, tree-sitter, dprint                                         |
+| `k8s`      | kubectl, Helm, k9s                                                                             |
+| `tmux`     | TPM (Tmux Plugin Manager)                                                                      |
+| `ghostty`  | Ghostty terminal (dnf/COPR on Fedora, community `.deb` on Debian/Ubuntu) + Monaspace Nerd Font |
+| `dotfiles` | Symlinks all config files into `$HOME` (replaces Stow)                                         |
 
 ### Config Files (`files/`)
 
-| Source | Target |
-|--------|--------|
-| `zshrc` | `~/.zshrc` |
-| `gitconfig` | `~/.gitconfig` |
-| `gitignore_global` | `~/.gitignore` |
-| `git-hooks/commit-msg` | `~/.git-hooks/commit-msg` |
-| `tmux.conf` | `~/.config/tmux/tmux.conf` |
-| `ghostty/config` | `~/.config/ghostty/config` |
-| `k9s/` | `~/.config/k9s/` |
-| `dprint/dprint.jsonc` | `~/.config/dprint/dprint.jsonc` |
-| `omz-plugins/aliases.zsh` | `~/.oh-my-zsh/custom/aliases.zsh` |
-| `omz-plugins/functions.zsh` | `~/.oh-my-zsh/custom/functions.zsh` |
-| `omz-plugins/plugins/gstale/` | `~/.oh-my-zsh/custom/plugins/gstale/` |
-| `bin/` | `~/.local/bin/` (pbcopy, pbpaste, wslopen, xdg-open) |
+| Source                        | Target                                               |
+| ----------------------------- | ---------------------------------------------------- |
+| `zshrc`                       | `~/.zshrc`                                           |
+| `gitconfig`                   | `~/.gitconfig`                                       |
+| `gitignore_global`            | `~/.gitignore`                                       |
+| `git-hooks/commit-msg`        | `~/.git-hooks/commit-msg`                            |
+| `tmux.conf`                   | `~/.config/tmux/tmux.conf`                           |
+| `ghostty/config`              | `~/.config/ghostty/config`                           |
+| `k9s/`                        | `~/.config/k9s/`                                     |
+| `dprint/dprint.jsonc`         | `~/.config/dprint/dprint.jsonc`                      |
+| `omz-plugins/aliases.zsh`     | `~/.oh-my-zsh/custom/aliases.zsh`                    |
+| `omz-plugins/functions.zsh`   | `~/.oh-my-zsh/custom/functions.zsh`                  |
+| `omz-plugins/plugins/gstale/` | `~/.oh-my-zsh/custom/plugins/gstale/`                |
+| `bin/`                        | `~/.local/bin/` (pbcopy, pbpaste, wslopen, xdg-open) |
 
 ## Environment Flags
 
-| Flag | Default | Effect |
-|------|---------|--------|
+| Flag        | Default | Effect                                                  |
+| ----------- | ------- | ------------------------------------------------------- |
 | `CORPORATE` | `false` | Places work git context at `~/projects/work/.gitconfig` |
