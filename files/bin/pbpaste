@@ -1,4 +1,7 @@
 #!/bin/bash
-# pbpaste for WSL — read Windows clipboard
-powershell.exe Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'
-exit 0
+# pbpaste — print the system clipboard (WSL or native Linux)
+if [[ -n "$WSL_DISTRO_NAME" ]] || grep -qi microsoft /proc/version 2>/dev/null; then
+  powershell.exe Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'
+else
+  xclip -selection clipboard -o
+fi

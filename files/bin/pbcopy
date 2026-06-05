@@ -1,4 +1,7 @@
 #!/bin/bash
-# pbcopy for WSL — pipe stdin to Windows clipboard
-iconv -f UTF-8 -t UTF-16LE | clip.exe
-exit 0
+# pbcopy — pipe stdin to the system clipboard (WSL or native Linux)
+if [[ -n "$WSL_DISTRO_NAME" ]] || grep -qi microsoft /proc/version 2>/dev/null; then
+  iconv -f UTF-8 -t UTF-16LE | clip.exe
+else
+  xclip -selection clipboard
+fi
