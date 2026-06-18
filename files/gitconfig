@@ -3,6 +3,8 @@
 
 [user]
 	useConfigOnly = true
+	name = Ozin
+	email = Ozin@users.noreply.github.com
 
 [pull]
 	rebase = true
