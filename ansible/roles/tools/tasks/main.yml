@@ -31,9 +31,8 @@
 
 - name: Clone kickstart.nvim
   ansible.builtin.git:
-    repo: https://github.com/nvim-lua/kickstart.nvim.git
+    repo: https://github.com/Ozin/kickstart.nvim.git
     dest: "{{ home_dir }}/.config/nvim"
-    depth: 1
     update: false
 
 # --- Syft ---
